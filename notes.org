@@ -1,0 +1,105 @@
+#+STARTUP: showeverything
+
+* The Big Idea:
+p 78 resonate
+
+You should be able to use HTTP/2 for whatever you're doing with
+HTTP. It could even be as easy as flipping a switch or upgrading your
+web server if you're doing frontend web work.
+
+If you're doing API work, the only thing you might need to know on top
+of that is that you can now send multiple responses for a single
+request.
+
+But there's so much more efficiency under the hood. Much more
+effective use of TCP over a single connection.
+
+We can talk about some of that, and why Erlang was a good fit (and
+sometimes not a good fit)
+
+*** I want you to be excited about HTTP/2 because it's the future.
+
+*** I want you to know that it's easy to start using it.
+
+*** I want you to know that Erlang is fun() and that the syntax is "ok"
+
+* Syntax
+
+Show some rubby, java, whatever.
+
+show some erlang, eeeew
+
+show some algebra
+
+Show some erlang, ohh!
+
+Not sure I love this idea
+
+* Braintree Notebook
+
+Lead with the protocol
+
+Talk about gen_server
+
+What it is, what it gives you. Not how it does it. :P
+
+Talk about the limitations of gen_server for this case and introduce gen_fsm
+
+Talk about gen_fsm and how it helps manage the states of the connection
+
+Move into stream states and how it can be an fsm without being a gen_fsm
+
+anybody can make an fsm
+
+** What's missing?
+
+Frames? But that's just types?
+
+Skip upgrades. SSL
+
+Skip header compression? No it's needed for context of "Why gen_fsm?"
+
+But not at the detail I have done in the past.
+
+THIS WILL BE A HIGH LEVEL TALK
+
+The story of HTTP/2 in Erlang
+
+My Story
+
+I didn't write HTTP/2
+
+I didn't write Erlang
+
+I saw the need for one by the other and thought "I can do that"
+
+On more than one occasion after I thought "I can't do this"
+
+But more and more kept working
+
+And talk proposals kept getting accepted.
+
+ so I kept going
+
+
+* Unorganized Ideas:
+create a forkable repo in which a specific function is missing, and
+encourage people to fork it and write some kind of binary pattern
+match
+
+My job isn't to explain how it works or the specification. My goal is
+to get people excited about using Erlang and/or HTTP/2 on their own.
+
+It would be impossible for me to teach everything a person needs to
+know about HTTP/2 in 45 minutes
+
+It might not be impossible for me to show how to leverage a feature of
+HTTP/2 in Erlang (e.g. Push Promise) Of course, push promise would
+need to be complete in order to do that
+
+Maybe you know HTTP really well. Maybe you use it in your work
+everyday but take it for granted. but you definitely use it all the
+time.
+
+No matter what we know, we can all agree that faster is better, and
+the less we send, the faster it gets there.

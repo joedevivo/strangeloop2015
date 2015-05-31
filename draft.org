@@ -1,0 +1,1586 @@
+#+STARTUP: showeverything
+
+
+#+OPTIONS: ^:{} toc:0 num:nil
+
+* Introduction
+
+Hi. I'm Joe DeVivo and I'm here to talk about HTTP/2 in Erlang. We're
+not going to get to it all. I cut tons from this talk. Hopefully I can
+give you all enough context to go learn more. So which should I talk
+about first?
+
+** Why HTTP/2?
+
+HTTP/2 is the future. It's coming and there's no stopping it. I
+actually haven't even used HTTP/1 in months. Hahaha, just
+kidding. HTTP/1 will be around for a long time.
+
+The actual 'Why?' is efficiency. HTTP was built for TEXT by physicists
+who wanted to share academic papers and thought it would be cool if
+they could "link" their references to the actual reference.
+
+Then we started using it for EVERYTHING. Images, javascripts, videos,
+you name it, it could be sent over HTTP. And it was clunky at first. I
+rolled up on the world wide web in the mid 1990's and I had 90's web
+problems. If you were there too, you remember "broken jpgs". You might
+also remember that thing where the page loaded in black and white,
+with the default font and then suddenly the style got applied
+retroactively. Shout out to underconstruction.gif
+
+But eventually that stopped because the protocol improved with
+HTTP/1.1, right?
+
+WRONG! While HTTP/1.1 made some attempts at solving things like this
+(e.g. Pipelining), this problem really got solved by throwing tons of
+bandwidth at the problem. Perceived latency went down as the masses,
+myself included, got access to broadband.
+
+Is this solution enough then? Nope. Why not? Because slower
+connections are back in a big way with mobile devices, edge networks
+throughout the developing world, and not to mention the "internet of
+things".
+
+So, enter HTTP/2. If you only remember one thing about HTTP/2,
+remember that it's stingy. Why use two bits when one will do. HTTP/2
+wants to optimize how we use the wire. That also means taking
+advantage of a persistent TCP connection, instead of opening a new one
+for every resource.
+
+It changes how efficiently we use the wire without changing HTTP/1.1's
+semantics.
+
+** Why Erlang?
+
+The really short answer is that I'm an Erlanger. I've been working
+with Erlang web technologies, and saw that Erlang would eventually
+have a need for an HTTP/2 server, (and client for that matter). So,
+"because I love Erlang" was reason enough for me, but you're not
+me. Are you?
+
+In case you weren't sure; No, you're not. So let me talk a bit about
+why I like Erlang.
+
+*** It's functional!
+
+You all like functional languages right? When I first stared using
+Erlang and it was hard to get into. Once I did, I found it easier to
+express myself simply, especially with Pattern Matching
+
+*** Pattern Matching
+
+Oh, I love pattern matching. Maybe show an example here.
+
+**** Pattern Matching a function clause
+
+#+BEGIN_SRC erlang
+int_to_string(0) ->
+    "ZERO!";
+int_to_string(1) ->
+    "the loneliest number";
+int_to_string(2) ->
+    "two";
+int_to_string(3) ->
+    "III";
+int_to_string(SomeInt) ->
+    integer_to_list(SomeInt).
+#+END_SRC
+
+Basically, this lets us set up specific cases, and catch alls. Also,
+if you caught it up there, I'm using erlang's integer_to_list
+function. Because strings in Erlang are lists. Sometimes that's
+awesome and sometimes it's not. I promise, if you get into Erlang, you
+will at some point tableflip over this.
+
+People get hung up on Erlang's punctuation. To me it just seems like
+English. You have this idea (or "clause") but it's not complete. So
+you "end" it with a semicolon and keep going. When the idea is
+complete, you end it with a period instead.
+
+*** Concurrency
+
+Have you ever "slapped some concurrency" on a Java application? It's
+easy right? Just sub java.util.HashMap for
+java.util.concurrent.ConcurrentHashMap and you're done right?
+
+Erlang is really into concurrency and high availability. It was
+originally designed to run ericsson's telcom switches. So while a lot
+of languages, like Java, had concurrency bolted on after the fact,
+it's always been at Erlang's core.
+
+Erlang rocks the actor model for concurrency. Each actor lives in its
+own little world, it can receive messages from the outside, which it
+can then modify its world view based on. It can send it's own messages
+out into the world, and it can even create new actors.
+
+In Erlang, the actors are processes, and it's extremely easy to spin
+up a new one. Making that new one interesting is more of a challenge,
+but Erlang gives you some of that for free too, and we're going to get
+up in that soon.
+
+*** Links and Monitors
+
+When an Erlang process creates another process, it can also create a
+link to that process and monitor it. What that means is that basically
+if the child process crashes, the parent will get notified. This is
+key to Erlang's "let it crash" philosophy which basically celebrates
+the fact that's pretty easy to just start a replacement process if
+things go wrong.
+
+*** OTP
+
+OTP is the Open Telcom Platform. It's a set of standard libraries that
+come with Erlang. "Telcom" is a throwback to when Erlang was built for
+telephone switches.  To be honest, I don't think it's even possible to
+get Erlang without OTP; however, with alternative languages for the
+Erlang VM like Elixir, it might be possible to get OTP without
+Erlang. Well, I mean, I'm not sure you can have Elixir without Erlang,
+since Exlir compiles to Erlang, so who knows?
+
+The point is, the line is very blurry. However, I am pretty sure that
+up until now I've just talked about Erlang.
+
+OTP gives us some behaviors to make working with the Actor model and
+process supervision easier
+
+*** The Supervisor
+
+In my HTTP/2 server, chatterbox, I have one supervisor, which is an
+OTP provided behavior.  It's a pretty simple one at that. I pretty
+much got it almost verbatim from Learn You Some Erlang, which is a
+great resource.
+
+What it's doing is setting up a socket to listen on whatever
+port. Then spawns N processes to sit there trying to accept
+connections. When a connection comes in, one of those processes snags
+it and starts doing stuff.
+
+Erlang has all sorts of cool ways of handling processes, but we're
+going to use "simple one for one" here. Simple one for one allows us
+to share the listener socket across all the children, and is totally
+cool when a child process terminates. It's also pretty cool with lots
+of children, all of which are the same kind of thing. It's a good
+choice for a web server.
+
+We spawn all these children as "temporary" which is telling the Erlang
+VM, don't worry if this one crashes, another client will connect,
+starting everything over again.
+
+*** Generic Finite State Machine
+
+We talked a bit before about an actor having a "world view". Usually,
+it's just its internal perspective. So the actor should have some kind
+of state. OTP gives us this behavior called gen_fsm, which is like
+"Bring your own state and transitions" process. You tell it how to
+start up, what things make up the state and how to react to different
+message types and that's it. OTP takes care of actually sending and
+receiving those messages.
+
+What we want to do, is write an fsm that accepts something off the
+listener socket we specified in the supervisor, and then start
+interacting with the packets coming in over that connection. So we
+implement a gen_fsm, and tell the supervisor to start a bunch of
+them.
+
+* Let's Apply some of this to HTTP/2
+
+We touched on only using one TCP connection for HTTP/2 requests,
+We can create a place in the gen_fsm's state where we keep the TCP
+socket, but that's not all we need, let's go back to the protocol.
+
+* HTTP/2 Connections
+
+An HTTP/2 connection remains persistent between requests, and while
+HTTP/2 remains a stateless protocol, the connection maintains some
+state in the spirit of stinginess over the wire. So, we'll write a
+server process that maintains this in its state, but allows us to
+process individual requests in a stateless fashion.
+
+How can we do that? The HTTP/2 spec explains it!
+
+HTTP/2 uses multiplexed streams. These streams represent at most ONE
+request, which is semantically identical to an HTTP/1 request. So how
+do these streams work? What are they even for?
+
+** Frames
+
+Let's go down to the 'atomic' level of HTTP/2. The smallest thing
+there is, is a frame. Well, is an atom the smallest thing. I guess
+not. I think the simile holds, because a frame is made up of a frame
+header and a frame payload. These are two smaller things, but if we
+ever broke them up, everything would pretty much explode.
+
+For right now, the most interesting thing about a frame header is that
+it contains a 31 bit stream identifier. So, the frame knows what
+stream it's a part of.
+
+** Streams
+
+So what's a stream? It's a logical abstraction over a
+connection. Physically, it's a sequence of frames. Where the
+connection is also a sequence of frames, the connection is THE
+sequence of frames. A stream is filtered by the ID. Most of them look
+like a series of frames sent by the client representing a request, and
+then a series of frames sent by the server representing the response.
+
+** Stream 0
+
+Stream 0 is reserved for connection level frames. The meta-stream, as
+it were.
+
+** Connection State
+
+Streams are our old-fangled web requests and responses, and they're
+stateless like good semantically identical messages should be. So,
+let's talk about this connection thing and it's state.
+
+I already said that we're going to keep the TCP socket in the
+connection's state. The spec doesn't actually explicitly say we have
+to, but I can't imagine an implementation that doesn't. The spec does
+say that we have to keep track of some things. Let's start with the
+connection settings.
+
+** SETTINGS
+
+An HTTP/2 connection has six settings that affect it.
+
+- SETTINGS_HEADER_TABLE_SIZE
+- SETTINGS_ENABLE_PUSH
+- SETTINGS_MAX_CONCURRENT_STREAMS
+- SETTINGS_INITIAL_WINDOW_SIZE
+- SETTINGS_MAX_FRAME_SIZE
+- SETTINGS_MAX_HEADER_LIST_SIZE
+
+A server and client both send values for these settings to each other
+when they initially connect, and need to maintain these values in
+state for the duration of the connection, although they can agree to
+change them later in the connection if they want to.
+
+*** HEADER_TABLE_SIZE
+
+What's "HEADER_TABLE_SIZE"? It's the maximum size that the header
+table can take up in memory. What's the header table? Well, this is
+where HPACK comes into the picture. I could do a whole talk on HPACK,
+and I have! Go check out the video of my LambdaJam 2015 talk
+here. [link].
+
+The short version is that in order to save space on the wire, an
+HTTP/2 client maintains a cache of headers it has sent, and the server
+maintains a cache of headers it has received. Then the next time the
+client sends that header, it can send an index for the header and the
+server will be using the same index, so less bytes! Guess where this
+cache lives? That's right! It's the connection state. Oh and hey,
+they're different caches for requests and responses, so the client and
+server actually keep two caches in the state.
+
+Are you already thinking about race conditions? If you're not, it's
+because I haven't explained the details of an HPACK implementation
+well enough here, nor do I have time to. I promise we'll talk about
+the race condition tho. Just not right now.
+
+*** ENABLE_PUSH
+
+This turns on push promises which are super cool, and it's a shame I'm
+going to gloss over them for now. Just imagine that you can send
+multiple responses to a single request. That's what push promises
+are. So if you're asked for HTML, you can respond with the HTML, CSS,
+JavaScript, and even images, that your HTML references.
+
+*** MAX_CONCURRENT_STREAMS
+
+I touched briefly on the idea of streams. What we didn't talk about is
+that a stream is also a finite state machine. [Show it on a
+slide]. There are rules for what type of frame can come in while a
+stream is in a particular state and rules for what events transition
+into different states.
+
+Did I mention that frames have types? There are ten types and a
+frame's type is specified in the frame header. Isn't that exciting?
+You now know half of the things in the frame header, so don't say I
+didn't teach you something.
+
+All 2^31 - 1 streams begin in the 'idle' state, and when they're done,
+they end up 'closed'. Max concurrent streams sets a cap for how many
+streams can be in the other five states at any given time.
+
+*** INITIAL_WINDOW_SIZE
+
+Initial window size? HTTP/2 brings flow control to HTTP. It allows the
+client and server to both set limits about how much data they're
+willing to accept. The good news here is that it only applies to DATA
+frames, which means "Request and Response bodies". Frames that tell
+the connection what to do with itself are exempt from flow control and
+can still get through.
+
+The initial window size is how much byte credit this connection
+has. The good news is that we're in charge of the credit limits, so if
+we receive ten bytes, the available credit goes down ten, but we can
+just extend the credit another ten. This allows us, as the server to
+receive bytes, keep them in memory, do stuff with them, throw them
+away, and then at that point issue more credit. This way, we use a
+finite amount of memory.
+
+BTW, issuing credit is done with a WINDOW_UPDATE frame, and can be
+done at the connection or stream level.
+
+*** MAX_FRAME_SIZE
+
+OMG Frame payloads have size. A frame header contains a frame length
+which lets you know, after the header is over, how many of the
+following bytes before the next header. You're now 3 quarters of the
+way to knowing everything you need to know about frame headers, but
+that last quarter is the most complicated. This setting says what the
+maximum value for frame length can be.
+
+*** MAX_HEADER_LIST_SIZE
+
+Max header list size sounds like the same as HEADERS_TABLE_SIZE, but
+this is at the stream level and is basically a cap for how much
+headers data can be sent in a single request.
+
+** Settings Redux
+
+Wow. In explaining these six settings, I think I got through a sizable
+chuck of the protocol. We talked about multiplexing, flow control,
+header compression, and server push! And that was just to set the
+stage for connection state.
+
+We'll need to store all six of these settings in the connection state,
+but they also imply even more state.
+
+We'll have to have a way of tracking:
+
+- how many streams are active
+- what our current credit balance is at the connection level
+- what our current credit balance is at the stream level
+- a cache of request headers received (decode context)
+- a cache of response headers sent (encode context)
+
+By the way, each peer can have different values for these settings, so
+we'll actually need to keep track of the server's to know what we can
+receive and the client's to know what we can send.
+
+So we can store these all in an Erlang state record.
+
+* Gen_fsm State
+
+I mentioned before that gen_fsm takes care of all the messy stuff
+so you can bring your own state. Well, now we know what we want our
+state to be. Of course, we have the option to change it, and in real
+life I just added one of these at a time as I tried to implement
+little slices of the spec.
+
+While Erlang seems to be moving away from this, I took the traditional
+route of declaring a record for my connection state.
+
+Records are a kind of hackey struct in Erlang. You declare one like this:
+
+#+BEGIN_SRC erlang
+-record(connection_state, {socket, max_frame_size}).
+#+END_SRC
+
+But Erlang just treats it as a tuple like
+
+#+BEGIN_SRC erlang
+{connection_state, Socket, MaxFrameSize}.
+#+END_SRC
+
+With some syntactic sugar:
+
+#+BEGIN_SRC erlang
+ConnectionState#connection_state.socket.
+%% Which is basically
+element(2, ConnectionState).
+%% Which can also be a pattern match
+{connection_state, Socket, _} = ConnectionState.
+
+
+%% Direct Access
+Socket = ConnectionState#connection_state.socket.
+%% Pattern Matching
+#connection_state{socket=Socket} = ConnectionState.
+%% Create a modified copy
+NewConnectionState
+    = ConnectionState#connection_state{socket=NewSocket}.
+
+
+#+END_SRC
+
+The only difference is that if I change the record declaration later,
+the first method of accessing it still works, unless I change the
+record so "socket" isn't a thing anymore.
+
+The second way breaks if I move the order of things.
+
+The third way breaks if I change the order of things OR the number of fields.
+
+The point is that records can be brittle, but I'm used to them. Maps
+seem like the future, but when I started this project, the
+implementation was incomplete. It's not incomplete now, so give them a
+shot :D
+
+* Gen_fsm callbacks
+
+Gen_fsm does the heavy lifting, but you do have to write some code you
+know? In a gen_fsm's life cycle, there are six callbacks that we'll
+need to define, even if they don't wind up doing anything. there's
+also callbacks that need to be defined for each state, but we're
+getting ahead of ourselves.
+
+** init/1
+
+init runs one time on start up. It takes anything as an argument, but
+usually it's a list. Even if you have nothing to tell it, it'll take
+the empty list `[]`.
+
+Remember when we spawned a bunch of processes to listen on a
+socket. These are they, and init is being passed a socket for it to
+toss in to the state.
+
+init/1 returns the initial state of the server. It goes a little
+something like this, hit it!
+
+#+BEGIN_SRC erlang
+init([{Transport, ListenSocket}, SSLOptions]) ->
+    {ok, Ref} = prim_inet:async_accept(ListenSocket, -1),
+    {ok,
+     accept,
+     #connection_state{
+        listen_ref=Ref,
+        socket = {Transport, undefined},
+        ssl_options = SSLOptions
+        }}.
+#+END_SRC
+
+What we're saying here is to go ahead and just spawn an acceptor
+somewhere. When a connection comes along we'll get a process message
+that let's us know and we'll deal with it then. We'll store some of
+this information in the FSM's state, and then transition into the
+accept state, where we wait for a client to come along.
+
+
+handle_info/2 is for messages that are not managed by the gen_fsm
+messaging API. An example of this has to do with the socket we just
+opened. If it closes unexpectedly, it will send a message to our
+gen_fsm (isn't Erlang cool?) and since it's not a normal
+gen_fsmy message, we need a handle_info callback clause to deal
+with it.
+
+#+BEGIN_SRC erlang
+handle_info({tcp_closed, _Socket}, _StateName, State) ->
+    {stop, normal, S};
+#+END_SRC
+
+{tcp_closed, _Socket} is the message, and State is the actual server
+state. We could do something with this if we were trying to salvage
+the process, but since the socket being closed means this connection
+is done with, we just stop the server.
+
+#+BEGIN_SRC erlang
+handle_info({inet_async, _ListSock, Ref, {ok, CliSocket}},
+    accept,
+    S=#connection_state{
+        ssl_options = SSLOptions,
+        socket = {Transport, undefined},
+        listen_ref = Ref
+    }) ->
+    inet_db:register_socket(CliSocket, inet_tcp),
+    Socket = case Transport of
+        gen_tcp ->
+            CliSocket;
+        ssl ->
+            {ok, AcceptSocket} = ssl:ssl_accept(CliSocket, SSLOptions),
+            %% TODO: Erlang 18 uses ALPN
+            {ok, _Upgrayedd} = ssl:negotiated_next_protocol(AcceptSocket),
+            AcceptSocket
+        end,
+    chatterbox_sup:start_socket(),
+
+    {next_state,
+     handshake,
+     S#connection_state{
+       socket = {Transport, Socket}
+     },
+     0};
+#+END_SRC
+
+"Transport" tells us if we're going to use the `gen_tcp` or `ssl`
+module for handling sockets. After the setup they're pretty much the
+same, so let's just assume we're using `gen_tcp` from here on out. so
+the slides are easier to read.
+
+We open up another process for listening on the Listener socket, so
+there's always something ready to accept new connections.
+
+After this socket accepting is done, we store the socket in the FSM
+state and transtition into the `handshake` state.
+
+
+** StateName Callbacks
+
+StateName/2 and StateName/3. They're pretty much the same. They both
+receive a message and and then transition into another state. The only
+difference is that the `/3` sends a response. `/2` doesn't need one.
+
+Then we define a function that explains to gen_fsm what to do when it
+times out in the a handshake state. This is our first example of the
+StateName/2 callback.
+
+[Note: accept didn't need one, since it was triggered by handle_info]
+
+StateName/2 needs to return one of 4 results:
+#+BEGIN_SRC erlang
+{next_state,NextStateName,NewStateData}
+{next_state,NextStateName,NewStateData,Timeout}
+{next_state,NextStateName,NewStateData,hibernate}
+{stop,Reason,NewStateData}
+#+END_SRC
+
+But we're most interested in the second and last. Let's talk about the
+last real quick. It stops things if we find an error. HTTP/2 has a way
+to close the connection if we find an error too!
+
+#+BEGIN_SRC erlang
+handshake(timeout,
+          StateWithSocket=#connection_state{
+            socket={Transport, Socket}
+          }) ->
+    case Transport:recv(AcceptSocket, 24, 5000) of
+        {ok, <<"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n">>} ->
+            {next_state, connected, StateWithSocket, 0};
+        _ ->
+            {next_state, closing, StateWithSocket, 0}
+    end.
+#+END_SRC
+
+** GO AWAY
+
+There's an HTTP/2 Frame called "go away" that tells the connection
+that we can't recover. There are lots of reasons this could happen,
+and some of them even have specific codes!
+
+We'll write a function for that:
+
+#+BEGIN_SRC erlang
+go_away(ErrorCode,
+         State = #connection_state{
+                   socket={Transport,Socket},
+                    next_available_stream_id=NAS
+                  }) ->
+    GoAway = #goaway{
+                last_stream_id=NAS,
+                error_code=ErrorCode
+               },
+    GoAwayBin = http2_frame:to_binary({#frame_header{
+                                          stream_id=0
+                                         }, GoAway}),
+    Transport:send(Socket, GoAwayBin),
+    {next_state, closing, State, 0}.
+#+END_SRC
+
+It will actually send to go_away frame and then transition into the
+`closing`, which might look like this.
+
+
+
+#+BEGIN_SRC erlang
+closing(Message, State=#connection_state{
+        socket={_, undefined}
+    }) ->
+    %% Does nothing if socket is undefined
+    {stop, normal, State};
+closing(Message, State=#connection_state{
+        socket={Transport, Socket}
+    }) ->
+    %% Closes the socket otherwise
+    Transport:close(Socket),
+    {stop, normal, State}.
+#+END_SRC
+
+We add another clause to cover if we don't have a socket set yet, so
+it will do everything but close the socket.
+
+So our go_away function effectively closes the connection with a
+reason. We're going to use it if we have any problems establishing the
+connection in the accept state.
+
+#+BEGIN_SRC erlang
+handshake(timeout,
+          StateWithSocket=#connection_state{
+            socket={Transport, Socket}
+          }) ->
+#+END_SRC
+
+And now we have an FSM just sitting around with an open socket. Just
+opening a socket's never been so easy! Now what?
+
+We still need to start the connection. Fortunately for us, every
+HTTP/2 connection begins with a preamble: "PRI *
+HTTP/2.0\r\n\r\nSM\r\n\r\n". It's 24 characters of fried gold. Let's
+ask for it immediately:
+
+#+BEGIN_SRC erlang
+{ok, <<"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n">>}
+    = Transport:recv(AcceptSocket, 24, 5000),
+{next_state, connected, StateWithSocket, 0}.
+#+END_SRC
+
+Those carets around the string means it's a binary! Let's go ahead and
+store that accepted socket in the state and transition into the
+connected state where we'll read frames.
+
+but what if that doesn't come over? Well, this thing will explode,
+which I guess is ok since we're never going to do our job as an HTTP/2
+server anyway, but we don't have to be obnoxious about it.
+
+#+BEGIN_SRC erlang
+case Transport:recv(Socket, length(?PREAMBLE), 5000) of
+    {ok, <<<"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n">>} ->
+        {next_state, connected, StateWithSocket, 0};
+    _ ->
+        go_away(?PROTOCOL_ERROR, StateWithSocket)
+end.
+#+END_SRC
+
+That'll stop the server from doing anything when we know we're done
+and actually closes the socket tidily.
+
+Now we're started up. We've received this, everything else will be a
+HTTP/2 frame. Another thing we know from the RFC, is that a frame
+header will always be nine bytes. So let's look at some code to pull a
+frame off the wire:
+
+#+BEGIN_SRC erlang
+{ok, FrameHeaderBin} = Transport:recv(Socket, 9),
+FrameHeader = http2_frame:read_binary_frame_header(FrameHeaderBin),
+{ok, FramePayloadBin} = Transport:recv(Socket, FrameHeader#frame_header.length),
+#+END_SRC
+
+We'll wrap it in something like
+#+BEGIN_SRC erlang
+http2_frame:read({Transport, Socket}, Timeout).
+#+END_SRC
+
+So you don't have to worry about it.
+
+So what's the magic behind read_binary_frame_header?
+
+#+BEGIN_SRC erlang
+read_binary_frame_header(<<Length:24,Type:8,Flags:8,_R:1,StreamId:31,_Rem/bits>>) ->
+    #frame_header{
+        length = Length,
+        type = Type,
+        flags = Flags,
+        stream_id = StreamId
+    }.
+#+END_SRC
+
+Pattern matching is fun. See the carets around everything? This is a
+binary. Notice those numbers! They're in bit counts not byte counts
+because StreamId is 31 bits. My Sega Genesis was only 16 bits. The
+`/bits` at the end is what makes this possible.
+
+So great! We know the finite number of bytes to pull of wire to get a
+frame. But this is a server, not a for loop. I mean, what's a for loop?
+
+We basically need to write a `connected/2` callback for our gen_fsm to
+handle a single frame on timeout.
+
+The real fun is going to be in connected/2, because we're going to
+read frames one at a time and process them.
+
+#+BEGIN_SRC erlang
+connected(timeout, State=#connection_state{
+                            socket=Socket
+                        }) ->
+    {FrameHeader, Payload} = http2_frame:read(Socket),
+    %% Do stuff, Maybe define "NewState" with an updated
+    %% value for our remaining flow control credits maybe?
+    route_frame({FrameHeader, Payload}, State).
+
+-spec route_frame(http2_frame(), connection_state())
+    -> {next_state,
+        connected | continuation | closing,
+        connection_state(),
+        non_neg_integer()}.
+route_frame(_, State) ->
+    {next_state, connected, State, 0}.
+#+END_SRC
+
+The function clause is "yet another pattern match" which is looking
+for this function to have two arguments: a message `next` and a
+bound variable `State`. By bound, I mean we can use `State` anywhere
+in the function body and it will mean this thing that was passed
+in. Also, you can't change it!
+
+After the hashmark, we're saying this is a connection_state
+record. That means that if anything that's not an connection_state
+record is passed in here, it won't match this clause. Since that is
+our only clause, this will blow up on a `badmatch` if any other
+message comes in.
+
+We could add a catch all like this tho:
+
+#+BEGIN_SRC erlang
+connected(AnyMessage, AnythingButProbablyState) ->
+    io:format("Unexpected message: ~p~n", [AnyMessage]),
+    io:format("Unexpected state: ~p~n", [AnythingButProbablyState])
+    {next_state, connected, AnythingButProbablyState, 0}.
+#+END_SRC
+
+io:format, it's like printf/puts/System.out.println for Erlang!
+
+So this does nothing. Well, I refactored the frame reading code into
+one function call, as you can imagine we're going to call it
+alot. We'll "do stuff" later, but right now we need the skeleton of
+the server in place, which is what this is. We're also going to have
+it return the same return values that gen_fsm:StateName/2 would
+return.
+
+** Back to the Protocol
+
+The rest should be as easy as routing these frames to different parts
+of the process, right? Well, the RFC has its own ideas.
+
+It's first idea is that there's to be a settings handshake at the
+beginning of every connection. When you think about it, it makes a ton
+of sense. Each side of the connection needs to know what the other
+expects. It's the foundation of an healthy relationship!
+
+The RFC also says that whenever you receive a SETTINGS frame... Oooh!
+SETTINGS is one of the types of frames we talked about! Anyway, when
+you get one, you have to acknowledge it, so your peer knew you got
+it. So, to send an ACK, you send a SETTINGS frame back with the ACK
+flag set in the frame header. OMG It's the final component of the
+frame header: FLAGS!
+
+So in the beginning, two pairs of SETTINGS frames are
+exchanged. great. We could put this in the handshake callback, and it
+would look like this:
+
+#+BEGIN_SRC erlang
+handshake(timeout,
+          StateWithSocket=#connection_state{
+            socket={Transport, Socket}
+          }) ->
+    case Transport:recv(Socket, length(?PREAMBLE), 5000) of
+        {ok, <<<"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n">>} ->
+            {next_state, connected, StateWithSocket, 0};
+        _ ->
+            go_away(?PROTOCOL_ERROR, StateWithSocket)
+    end.
+#+END_SRC
+
+So, that's were we last left it. Let's add the settings handshake to
+the accept state. All of this work is going to happen in this `case`
+statement.
+
+#+BEGIN_SRC erlang
+case Transport:recv(Socket, length(?PREAMBLE), 5000) of
+    {ok, <<?PREAMBLE>>} ->
+        ServerSettings = #settings{} %% defaults!
+        http2_frame_settings:send({Transport,Socket},
+                                  #settings{}, ServerSettings),
+
+        ClientSettingsFrame
+          = {FH, _FPayload}
+          = http2_frame:read({Transport,Socket}, 5000),
+
+        {next_state, connected,
+         StateWithSocket#connection_state{
+             send_settings = ClientSettings,
+             recv_settings = ServerSettings
+         },0};
+    BadPreamble ->
+        go_away(?PROTOCOL_ERROR, StateWithSocket)
+    end.
+#+END_SRC
+
+#+BEGIN_SRC erlang
+http2_frame_settings:send(Socket, CurrentSettings, NewSettings),
+Frame = {FH, _FPayload} = http2_frame:read({Transport,Socket}, 5000),
+#+END_SRC
+
+
+The way http2_frame handles this, is by reading the first 9 bytes and
+pattern matching. We already saw this earlier. Once we've read those 9
+bytes we know what type of frame it is, and how long it is, so we can
+parse the rest of the frame:
+
+First thing we'll do is define a callback in http2_frame like this:
+
+#+BEGIN_SRC erlang
+-callback read_binary(Bin::binary(),
+                      Header::frame_header()) ->
+    {ok, payload()} | {error, term()}.
+#+END_SRC
+
+We've got this "type" we've created called `payload` which can be the
+parsed data from any of the ten frame types. We'll create a new module
+for each type that implements this callback.
+
+So let's walk through the process for reading the client settings
+
+#+BEGIN_SRC erlang
+read(Socket, Timeout) ->
+    case read_header(Socket, Timeout) of
+        {error, Reason} ->
+            {error, Reason};
+        FrameHeader ->
+            {ok, Payload} = read_payload(Socket, FrameHeader, Timeout),
+            {FrameHeader, Payload}
+    end.
+#+END_SRC
+
+So read_header we've already seen. Actually, we saw the straight
+binary version. Here's the TCP version.
+
+#+BEGIN_SRC erlang
+read_header({Transport, Socket}, Timeout) ->
+    case Transport:recv(Socket, 9, Timeout) of
+        {ok, HeaderBytes} ->
+            {Header, <<>>} = read_binary_frame_header(HeaderBytes),
+            Header;
+        E -> E
+    end.
+#+END_SRC
+
+This recv reads the next 9 bytes off the wire and then passes it to
+the function we saw before with the binary pattern match.
+
+But I'll show it to you again because I like you.
+
+#+BEGIN_SRC erlang
+read_binary_frame_header(<<Length:24,Type:8,Flags:8,_R:1,StreamId:31,Rem/bits>>) ->
+    Header = #frame_header{
+        length = Length,
+        type = Type,
+        flags = Flags,
+        stream_id = StreamId
+    },
+    {Header, Rem}.
+#+END_SRC
+
+So, cool. This function is a little different. It's built so we can
+read binaries of any size! So from a functional perspective, we're not
+limited to reading bytes as we need them off a socket. This would be
+more useful if we were using an active socket.
+
+So, back to `read/2`:
+
+#+BEGIN_SRC erlang
+read(Socket, Timeout) ->
+    case read_header(Socket, Timeout) of
+        {error, Reason} ->
+            {error, Reason};
+        FrameHeader ->
+            {ok, Payload} = read_payload(Socket, FrameHeader, Timeout),
+            {FrameHeader, Payload}
+    end.
+#+END_SRC
+
+Once we've got the frame header, we need to read the payload, and we
+get to do some fun pattern matching again.
+
+#+BEGIN_SRC erlang
+read_payload(_, #frame_header{length=0}, _Timeout) ->
+    {ok, FramePayload, <<>>} = read_binary_payload(<<>>, Header),
+    {ok, FramePayload};
+read_payload({Transport, Socket}, Header=#frame_header{length=L}, Timeout) ->
+    case Transport:recv(Socket, L, Timeout) of
+        {ok, DataBin} ->
+            {ok, FramePayload, <<>>} = read_binary_payload(DataBin, Header),
+            {ok, FramePayload};
+        E -> E
+    end.
+#+END_SRC
+
+read_payload pattern matches on length of the header. If it's 0 do
+nothing, otherwise read those bytes off the socket, then send them off
+to read_binary_payload. 0 actually means "read everything!" so we make
+sure to skip the call to `recv`
+
+#+BEGIN_SRC erlang
+read_binary_payload(Bin, Header = #frame_header{type=?DATA}) ->
+    http2_frame_data:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?HEADERS}) ->
+    http2_frame_headers:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?PRIORITY}) ->
+    http2_frame_priority:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?RST_STREAM}) ->
+    http2_frame_rst_stream:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?SETTINGS}) ->
+    http2_frame_settings:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?PUSH_PROMISE}) ->
+    http2_frame_push_promise:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?PING}) ->
+    http2_frame_ping:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?GOAWAY}) ->
+    http2_frame_goaway:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?WINDOW_UPDATE}) ->
+    http2_frame_window_update:read_binary(Bin, Header);
+read_binary_payload(Bin, Header = #frame_header{type=?CONTINUATION}) ->
+    http2_frame_continuation:read_binary(Bin, Header).
+#+END_SRC
+
+This one pattern matches on frame_type and calls the callback in the
+appropriate module.
+
+Our read_binary function in http2_frame_settings understands how to
+turn this binary into a list of settings, and then how to overlay
+those settings on top of the defaults. These steps are broken up
+because an unset represents "no change" not "default value".
+
+So, now out of the rabbit hole back to the accept state!
+
+#+BEGIN_SRC erlang
+case Transport:recv(Socket, length(?PREAMBLE), 5000) of
+    {ok, <<?PREAMBLE>>} ->
+        StateToRouteWith = send_settings(StateWithSocket),
+
+        ClientSettingsFrame
+          = {FH, ClientSettings}
+          = http2_frame:read({Transport,Socket}, 5000),
+
+        {next_state, connected,
+         StateWithSocket#connection_state{
+             send_settings = ClientSettings,
+             recv_settings = ServerSettings
+         },0};
+    BadPreamble ->
+        go_away(?PROTOCOL_ERROR, StateWithSocket)
+end.
+#+END_SRC
+
+We've got the ClientSettings list. We need to overlay it on the spec's defaults:
+
+#+BEGIN_SRC erlang
+NewSendSettings
+    = http2_frame_settings:overlay(#settings{},
+                                   ClientSettings),
+#+END_SRC
+
+What's #settings{}?
+
+#+BEGIN_SRC erlang
+-record(settings, {header_table_size        = 4096,
+                   enable_push              = 1,
+                   max_concurrent_streams   = unlimited,
+                   initial_window_size      = 65535,
+                   max_frame_size           = 16384,
+                   max_header_list_size     = unlimited}).
+#+END_SRC
+
+Those are the defaults from the spec.
+
+Settings frames can come at any time and change the state of
+the connection. Since this can happen more than once, we should have a
+function for this.
+
+Turns out, we already do. Remember `route_frame`? Well let's make it
+do this job for us. Right now it just does nothing and returns the
+state you pass in, but that's no way to live. This is the first of
+many route_frame clauses.
+
+#+BEGIN_SRC erlang
+route_frame(_, State) -> {next_state, continuation, State}.
+#+END_SRC
+
+This is just the basic client settings receipt:
+
+#+BEGIN_SRC erlang
+route_frame({H, Payload}, S = #connection_state{
+                                 socket=Socket,
+                                 send_settings=SS
+                                })
+    when H#frame_header.type == ?SETTINGS,
+         ?NOT_FLAG(H#frame_header.flags, ?FLAG_ACK) ->
+#+END_SRC
+
+`when` is a guard. It's kinda for when you can't use pattern matching
+for some reason. I could have done the header type in a pattern match,
+but the flags thing had to happen in a guard because it's more than
+just a match. It's a bitwise and!
+
+#+BEGIN_SRC erlang
+-define(IS_FLAG(Flags, Flag), Flags band Flag =:= Flag).
+-define(NOT_FLAG(Flags, Flag), Flags band Flag =/= Flag).
+#+END_SRC
+
+See what I did here? Each bit of `Flags` means something. ?FLAG_ACK is
+a 1 in bit 0, which coincidentally, is also 1.
+
+#+BEGIN_SRC erlang
+    NewSendSettings = http2_frame_settings:overlay(SS, Payload),
+
+    http2_frame_settings:ack(Socket),
+    {next_state,
+     connected,
+     S#connection_state{
+                        send_settings=NewSendSettings
+     }};
+#+END_SRC
+
+There's more to be done here, as far as flow control goes. And we
+haven't even gotten to frames yet, so let's move on.
+
+Let's go use this route_frame function in `handshake/2`
+
+#+BEGIN_SRC erlang
+case Transport:recv(Socket, length(?PREAMBLE), 5000) of
+    {ok, <<?PREAMBLE>>} ->
+        StateToRouteWith = send_settings(StateWithSocket),
+
+        Frame = {FH, _FPayload} = http2_frame:read({Transport,Socket}, 5000),
+
+        try FH#frame_header.type of
+            ?SETTINGS ->
+                route_frame(Frame, StateToRouteWith);
+            _ ->
+                go_away(?PROTOCOL_ERROR, StateToRouteWith)
+        catch
+            _:_ ->
+                go_away(?PROTOCOL_ERROR, StateToRouteWith)
+        end;
+    BadPreamble ->
+        go_away(?PROTOCOL_ERROR, StateWithSocket)
+end.
+#+END_SRC
+
+See that 5000 up there? It's saying that this should be an error case
+if we don't get a frame in 5 seconds. We need to do a few more things
+in here to make it work.
+
+We have a way of timing out if we haven't received a clients settings
+frame in 5 seconds. But what do we do about the ack of the server
+settings?
+
+The spec actually tells us something here:
+
+#+BEGIN_SRC plaintext
+6.5.3.  Settings Synchronization
+If the sender of a SETTINGS frame does not receive an acknowledgement
+within a reasonable amount of time, it MAY issue a connection error
+(Section 5.4.1) of type SETTINGS_TIMEOUT.
+#+END_SRC
+
+An OPTIONAL requirement! How will we do it?
+
+First of all, we're going to not apply our settings until we receive
+the ACK. We just send them and use the spec's defaults for now. But
+we're going to add a little more logic to the send.
+
+#+BEGIN_SRC erlang
+send_settings(State = #connection_state{
+                         recv_settings=CurrentSettings,
+                         socket=Socket,
+                         settings_sent=SS
+                        }) ->
+    NewSettings = chatterbox:settings(),
+    Ref = make_ref(),
+
+    http2_frame_settings:send(Socket, CurrentSettings, NewSettings),
+    send_ack_timeout({Ref,NewSettings}),
+    State#connection_state{
+      settings_sent=queue:in({Ref, NewSettings}, SS)
+     }.
+#+END_SRC
+
+What we're doing here is saying "get our settings from our
+application, and compare them to what's current (in this case, the
+defaults). Then put those in a queue of settings we've sent to the
+client, but haven't heard back about.
+
+Fortunately we're not handicapped with what a "reasonable" amount of
+time is. I'm going to choose 5s.
+
+That's what `send_ack_timeout` is all about.
+
+#+BEGIN_SRC erlang
+send_ack_timeout(SS) ->
+    Self = self(),
+    SendAck = fun() ->
+        timer:sleep(5000),
+        gen_fsm:send_all_state_event(Self, {check_settings_ack,SS})
+    end,
+    spawn_link(SendAck).
+
+#+END_SRC
+
+We're creating a higher order function here. or a "lam ba da" as my
+daughter calls them. It's a function that we can pass to another
+function, and the function we're going to pass it to is a doozey!
+spawn_link will spawn a whole new process that's linked to our
+http2_connection. If anything blows up, it will tell us.
+
+But if we put the call to `self()` inside our lambda, it'll be called
+by the spawned function, and that will report it's own pid, so we'll
+never get our message back.
+
+All this function is doing is sleeping for 5s and then sending a
+message back to our server about "Hey, have you heard back on this
+yet?"
+
+How do we know? Well, we know "This" is identified by "Ref", so let's
+see if "Ref" is still first in the queue?
+
+Also, what's `send_all_state_event`?
+
+#+BEGIN_SRC erlang
+handle_event({check_settings_ack, {Ref, NewSettings}},
+             StateName,
+             State=#connection_state{
+                      settings_sent=SS
+                     }) ->
+    case queue:out(SS) of
+        {{value, {Ref, NewSettings}}, _} ->
+            %% This is still here!
+            go_away(?SETTINGS_TIMEOUT, State);
+        _ ->
+            %% YAY!
+            {next_state, StateName, State,0}
+    end;
+#+END_SRC
+
+We don't care what state we were in. We process this message and then
+go back into it. This means, no matter what, the alarm goes off and we
+check that we got our ack.
+
+Great! but when are the settings applied?  All we have to do is add an
+ack clause to route_frame, which will get run every time we go through
+the connected callback
+
+#+BEGIN_SRC erlang
+route_frame({H, _Payload},
+            S = #connection_state{
+                   settings_sent=SS
+                  })
+    when H#frame_header.type == ?SETTINGS,
+         ?IS_FLAG(H#frame_header.flags, ?FLAG_ACK) ->
+    lager:debug("Received SETTINGS ACK"),
+    case queue:out(SS) of
+        {{value, {_Ref, NewSettings}}, NewSS} ->
+            {next_state,
+             connected,
+             S#connection_state{
+               settings_sent=NewSS,
+               recv_settings=NewSettings
+              }};
+        _ ->
+            {next_state, closing, S, 0}
+    end;
+#+END_SRC
+
+When an ACK comes over the wire, we pop the first settings we have on
+the queue and use them. We apply them to the state and we're good!
+
+Now, when our `{check_settings_ack...` message comes through, our
+settings_sent will either be empty or have something with a different
+ref on the front. Either way, we're set.
+
+Then we need to use our new function to send our settings back in the
+accept state.
+
+#+BEGIN_SRC erlang
+case Transport:recv(Socket, length(?PREAMBLE), 5000) of
+    {ok, <<?PREAMBLE>>} ->
+        StateToRouteWith = send_settings(StateWithSocket),
+
+        Frame = {FH, _FPayload} = http2_frame:read({Transport,Socket}, 5000),
+
+        try FH#frame_header.type of
+            ?SETTINGS ->
+                route_frame(Frame, StateToRouteWith);
+            _ ->
+                go_away(?PROTOCOL_ERROR, StateToRouteWith)
+        catch
+            _:_ ->
+                go_away(?PROTOCOL_ERROR, StateToRouteWith)
+        end;
+    BadPreamble ->
+        go_away(?PROTOCOL_ERROR, StateWithSocket)
+end.
+
+#+END_SRC
+
+Look, we added some new logic to make it a little more robust while
+we're here. Here's a try. It's awesome because it's like a Java
+try/catch and a case statement all at once!
+
+#+BEGIN_SRC erlang
+try FH#frame_header.type of
+    ?SETTINGS ->
+        route_frame(Frame, StateToRouteWith);
+    _ ->
+        go_away(?PROTOCOL_ERROR, StateToRouteWith)
+catch
+    _:_ ->
+        go_away(?SETTINGS_TIMEOUT, StateToRouteWith)
+end;
+#+END_SRC
+
+If I tried to access FH#frame_header.type and FH was not a frame
+header, what do you think would happen? Did you think "Literally
+explode?" If you did, you'd be wrong. The explosion is figurative :D
+
+Since sometimes FH can be the atom 'error', this is not uncommon. We
+could check for error, but we can be more concise with the try.
+
+Everything before the catch works just like a case statement with
+pattern matching. Is FH#frame_header.type == ?SETTINGS? if so, route
+it. Is it some other type of frame? Sorry, first frame has to be
+SETTINGS, so GO_AWAY!
+
+But if FH isn't a frame header at all, it's because http2:read_frame
+returned `{error, timeout}`. The record access throws an error, and we
+caught it with `_:_`!
+
+In this case, we've violated the whole "reasonable time thing", so
+we'll send a SETTINGS_TIMEOUT error instead of a PROTOCOL_ERROR,
+although you could argue it is actually a PROTOCOL_ERROR. Any HTTP/2
+heads that want to debate it later? let's do it!
+
+** The Connection is open, long live the connection!
+
+At this point we have an open connection and we're just chillin'
+waiting for frames. More often than not, as a server, the first frame
+we get is going to be on a new stream id, and it's going to be a
+HEADERS frame.
+
+NOT TO BE CONFUSED WITH A FRAME HEADER. Because boy, it can get
+confusing.
+
+A new stream id and a HEADERS frame means this is a HTTP request. Yay,
+we're about to serve up some justice! Um... I mean content.
+
+There are a couple of issues we have to handle here. First of all
+there's this idea of CONTINUATION frames. Here's the deal. HPACK is
+encoding the headers it sent to us, so these headers are a binary
+encoded hunk of data. If that binary hunk is bigger than
+MAX_FRAME_SIZE, it needs to come over in multiple frames. Those frames
+are of type "CONTINUATION". No big deal right? This is the race
+condition with HPACK I alluded to before.
+
+Well, because HPACK is always indexing things for later use and
+streams are multiplexed, it's really important that they're processed
+in order. What that means to us at the implementation level is that
+once we get a HEADERS frame on a stream, the connection is in lockdown
+and can only receive CONTINUATION frames on that stream id until the
+complete set of headers has been sent. This is effectively a mutex to
+solve this.
+
+How do we know when that's happened? Both HEADERS and CONTINUATION
+frames have an END_HEADERS flag that can be set in the frame header,
+so we look for that.
+
+Back in our connected state, we're just routing frames, but not
+really paying attention to state. We could have enhanced it to deal
+with the server's state record, and then added some fields to the
+state record to decide if the connection is in HEADER lockdown, but
+there's a better way!
+
+** connected state
+
+The connected state is basically a place where we've got an open
+connection and we're ready to accept frames.
+
+** continuation state
+
+Ok, so great, we're finally able to compensate for this HPACK mutex
+business. Let me sum up the conditional logic again:
+
+When a HEADERS frame comes in on stream N, the only frames that can be
+accepted by the server are CONTINUATION frames on stream N until the
+END_HEADERS flag is received.
+
+Good news is, there's a trivial case: When the HEADERS frame also has
+the END_HEADERS flag! That totally can happen. It all depends on frame
+size limits and number of headers.
+
+Here's what that route_frame looks like
+
+#+BEGIN_SRC erlang
+route_frame(F={H=#frame_header{
+                  type=?HEADERS,
+                  stream_id=StreamId
+                 }, _Payload} = Frame,
+        S = #connection_state{
+               decode_context=DecodeContext,
+               recv_settings=#settings{initial_window_size=RecvWindowSize},
+               send_settings=#settings{initial_window_size=SendWindowSize},
+               streams=_Streams,
+               content_handler = Handler
+           })
+#+END_SRC
+
+All we're doing here is figuring out with pattern matching "what bits
+of state we'll need for this frame" and then we have a guard to check
+"Did it have headers? Did it have the flag? Then it wasn't us"
+
+I'm dropping a bunch more stuff on you here because I won't have time
+to make a deeper dive on streams later. The connection keeps track of
+all the open streams, what their state is, and flow control
+information. Go read the code to learn more. Maybe talk tonight?
+
+
+#+BEGIN_SRC erlang
+    Stream = http2_stream:new(StreamId, {SendWindowSize, RecvWindowSize}),
+    {NewStream1, NewConnectionState} = http2_stream:recv_frame(Frame, {NewStream, S}),
+#+END_SRC
+
+Look, http2_stream:recv_frame is like a stream level version of
+route_frame. It helps us manage the state of each stream from this
+diagram.
+
+#+BEGIN_SRC plaintext
+                                +--------+
+                        send PP |        | recv PP
+                       ,--------|  idle  |--------.
+                      /         |        |         \
+                     v          +--------+          v
+              +----------+          |           +----------+
+              |          |          | send H /  |          |
+       ,------| reserved |          | recv H    | reserved |------.
+       |      | (local)  |          |           | (remote) |      |
+       |      +----------+          v           +----------+      |
+       |          |             +--------+             |          |
+       |          |     recv ES |        | send ES     |          |
+       |   send H |     ,-------|  open  |-------.     | recv H   |
+       |          |    /        |        |        \    |          |
+       |          v   v         +--------+         v   v          |
+       |      +----------+          |           +----------+      |
+       |      |   half   |          |           |   half   |      |
+       |      |  closed  |          | send R /  |  closed  |      |
+       |      | (remote) |          | recv R    | (local)  |      |
+       |      +----------+          |           +----------+      |
+       |           |                |                 |           |
+       |           | send ES /      |       recv ES / |           |
+       |           | send R /       v        send R / |           |
+       |           | recv R     +--------+   recv R   |           |
+       | send R /  `----------->|        |<-----------'  send R / |
+       | recv R                 | closed |               recv R   |
+       `----------------------->|        |<----------------------'
+                                +--------+
+#+END_SRC
+
+Let's dive in there for a minute, because otherwise we'd just have to
+talk about error_handling
+
+For the trivial case where a single headers frame comes in and it's
+both the END of the header block AND the request, it looks pretty simple:
+
+#+BEGIN_SRC erlang
+recv_frame(F={#frame_header{
+                   flags=Flags,
+                   type=?HEADERS
+                  }, _Payload},
+           {Stream=#stream_state{
+                      state=idle
+                     },
+            Connection=#connection_state{
+              decode_context=DecodeContext,
+              content_handler=Handler
+             }})
+  when ?IS_FLAG(Flags, ?FLAG_END_STREAM),
+       ?IS_FLAG(Flags, ?FLAG_END_HEADERS) ->
+    HeadersBin = http2_frame_headers:from_frames([F]),
+    {Headers, NewDecodeContext} = hpack:decode(HeadersBin, DecodeContext),
+    Handler:spawn_handle(self(), StreamId, Headers, <<>>),
+    {Stream#stream_state{request_headers=Headers},
+     Connection#connection_state{
+       decode_context=NewDecodeContext
+      }
+     };
+#+END_SRC
+
+There are a lot more clauses, but we won't have time to talk about
+them right now. Don't be sad, I'm here all week!
+
+We're doing two things in here, and really, those things just get
+split up into different squares on that diagram.
+
+First is decoding the headers.
+
+Headers can be a list of frames, but in this case it's only one. It's
+easier for us if it's a list of one, so we wrapped the frame in a
+`[]`. Then we want to decode the binary. See how it takes in a Context
+and returns a new one? That is the index that changes.
+
+Second is handling the request.
+
+This is just the content handler. In our case we're serving up files
+as DATA frames, but we could and probably will write a webmachine
+handler that could be used here as well.
+
+Since we know this is an END_HEADERS, we don't even need to transition
+into the continuation state. We don't need the mutex since we've
+already met the target condition! We'll go set the NextState value
+back at the connection level
+
+#+BEGIN_SRC erlang
+    NextState = case ?IS_FLAG(H#frame_header.flags, ?FLAG_END_HEADERS) of
+                    true ->
+                        connected;
+                    false ->
+                        continuation
+                end,
+    {next_state, NextState, NewConnectionState#connection_state{
+                                 streams = [{StreamId, NewStream1}|Streams],
+                                 continuation_stream_id = StreamId
+                                }, 0}
+#+END_SRC
+
+Since this was a new stream, we can just add it to the list. If it
+weren't we'd have to remove the old one first so there could be only
+one. Then we transition straight back to connected.
+
+So, we make a new stream and throw it in the state. In the case where
+we don't have an END HEADERS flag in our frame header (not a header
+frame... uggggg), then we transition to the continuation state. That's
+it. It's off to Mutexburg, population: you!
+
+#+BEGIN_SRC erlang
+continuation(next,
+             S = #connection_state{
+                    socket=Socket,
+                    continuation_stream_id = StreamId
+                   }) ->
+    Response =
+        case http2_frame:read(Socket, 10) of
+            {error, _} ->
+                {next_state, continuation, S, 0};
+            Frame = {#frame_header{
+                     stream_id=StreamId,
+                     type=?CONTINUATION
+                    }, _} ->
+                route_frame(Frame, S);
+            Frame ->
+                go_away(?PROTOCOL_ERROR, S)
+        end,
+    Response;
+continuation(_, State) ->
+    go_away(?PROTOCOL_ERROR, State).
+#+END_SRC
+
+So we're just checking here. If the socket times out after 10ms, come
+back into this state again. If the frame read off the socket pattern
+matches to the stream we're locked on, and it's a CONTINUATION frame,
+route the frame, otherwise it's a protocol error.
+
+So now,we have to route the continuation frame, but it's a stream
+operation, so let's delegate it out to http2_stream:recv_frame
+
+#+BEGIN_SRC erlang
+route_frame(F={H=#frame_header{
+                    stream_id=StreamId,
+                    type=?CONTINUATION
+                   }, _Payload},
+            S = #connection_state{
+                   streams = Streams
+                  }) ->
+    lager:debug("Received CONTINUATION Frame for Stream ~p", [StreamId]),
+    {Stream, NewStreamsTail} = get_stream(StreamId, Streams),
+    {NewStream, NewConnectionState} = http2_stream:recv_frame(F, {Stream, S}),
+    NewStreams = [{StreamId,NewStream}|NewStreamsTail],
+
+    NextState = case ?IS_FLAG(H#frame_header.flags, ?FLAG_END_HEADERS) of
+                    true ->
+                        connected;
+                    false ->
+                        continuation
+                end,
+
+    {next_state, NextState, NewConnectionState#connection_state{
+                              streams = NewStreams
+                             },0};
+#+END_SRC
+
+We'll just keep looping through here until we get that END_HEADERS
+flag and find ourselves back in the continuation state. But if it has
+the flag set, it's handled in the http2_stream and we just transition
+back into the right state.
+
+#+BEGIN_SRC erlang
+-spec spawn_handle(
+        pid(),
+        stream_id(),     %% Stream Id
+        hpack:headers(), %% Decoded Request Headers
+        binary()         %% Request Body
+       ) -> pid().
+spawn_handle(Pid, StreamId, Headers, ReqBody) ->
+    Handler = fun() ->
+        handle(Pid, StreamId, Headers, ReqBody)
+    end,
+    spawn_link(Handler).
+
+-spec handle(
+        pid(),
+        stream_id(),
+        hpack:headers(),
+        binary()
+       ) -> ok.
+#+END_SRC
+
+Let's walk through that state diagram!
+
+#+BEGIN_SRC plaintext
+                             +--------+
+                     send PP |        | recv PP
+                    ,--------|  idle  |--------.
+                   /         |        |         \
+                  v          +--------+          v
+           +----------+          |           +----------+
+           |          |          | send H /  |          |
+    ,------| reserved |          | recv H    | reserved |------.
+    |      | (local)  |          |           | (remote) |      |
+    |      +----------+          v           +----------+      |
+    |          |             +--------+             |          |
+    |          |     recv ES |        | send ES     |          |
+    |   send H |     ,-------|  open  |-------.     | recv H   |
+    |          |    /        |        |        \    |          |
+    |          v   v         +--------+         v   v          |
+    |      +----------+          |           +----------+      |
+    |      |   half   |          |           |   half   |      |
+    |      |  closed  |          | send R /  |  closed  |      |
+    |      | (remote) |          | recv R    | (local)  |      |
+    |      +----------+          |           +----------+      |
+    |           |                |                 |           |
+    |           | send ES /      |       recv ES / |           |
+    |           | send R /       v        send R / |           |
+    |           | recv R     +--------+   recv R   |           |
+    | send R /  `----------->|        |<-----------'  send R / |
+    | recv R                 | closed |               recv R   |
+    `----------------------->|        |<----------------------'
+                             +--------+
+
+#+END_SRC
+
+Path 1: easiest idle receives HEADERS with END_HEADERS AND END_STREAM!
+decode headers, handle content, transition to closed
+
+Path 2: idle receives HEADERS with END_STREAM, no END_HEADERS,
+transition to half_closed_remote, wait for continuations until END
+HEADERS, then decode headers, handle content, transition to closed.
+
+Path 3: idle receives HEADERS with END_HEADERS, no
+END_STREAM. transition to open and wait for DATA frames until one
+comes with END_STREAM, then decode headers, handle content and
+transition to closed.
+
+Path 4: idle receives HEADERS, no END_STREAM or END_HEADERS transition
+into open, expect continuations until one shows up with an
+END_HEADERS, then expect DATA frames until one shows up with an
+END_STREAM
+
+%%Solid conclusion? Do I even need one?
+
+
+#+BEGIN_SRC erlang
+http2_connection:send_headers(ConnPid, StreamId, ResponseHeaders),
+http2_connection:send_body(ConnPid, StreamId, Data),
+NewStreamId = http2_connection:new_stream(ConnPid),
+http2_connection:send_promise(ConnPid, StreamId, NewStreamId, PHeaders),
+spawn_handle(ConnPid, NewStreamId, PHeaders, <<>>),
+
+{ok, Ref} = prim_inet:async_accept(ListenSocket, -1),
+#+END_SRC

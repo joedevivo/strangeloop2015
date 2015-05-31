@@ -1,0 +1,2349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2015-09-24 Thu 07:36 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Joe DeVivo" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Introduction</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Hi. I'm Joe DeVivo and I'm here to talk about HTTP/2 in Erlang. We're
+not going to get to it all. I cut tons from this talk. Hopefully I can
+give you all enough context to go learn more. So which should I talk
+about first?
+</p>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">Why HTTP/2?</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+HTTP/2 is the future. It's coming and there's no stopping it. I
+actually haven't even used HTTP/1 in months. Hahaha, just
+kidding. HTTP/1 will be around for a long time.
+</p>
+
+<p>
+The actual 'Why?' is efficiency. HTTP was built for TEXT by physicists
+who wanted to share academic papers and thought it would be cool if
+they could "link" their references to the actual reference.
+</p>
+
+<p>
+Then we started using it for EVERYTHING. Images, javascripts, videos,
+you name it, it could be sent over HTTP. And it was clunky at first. I
+rolled up on the world wide web in the mid 1990's and I had 90's web
+problems. If you were there too, you remember "broken jpgs". You might
+also remember that thing where the page loaded in black and white,
+with the default font and then suddenly the style got applied
+retroactively. Shout out to underconstruction.gif
+</p>
+
+<p>
+But eventually that stopped because the protocol improved with
+HTTP/1.1, right?
+</p>
+
+<p>
+WRONG! While HTTP/1.1 made some attempts at solving things like this
+(e.g. Pipelining), this problem really got solved by throwing tons of
+bandwidth at the problem. Perceived latency went down as the masses,
+myself included, got access to broadband.
+</p>
+
+<p>
+Is this solution enough then? Nope. Why not? Because slower
+connections are back in a big way with mobile devices, edge networks
+throughout the developing world, and not to mention the "internet of
+things".
+</p>
+
+<p>
+So, enter HTTP/2. If you only remember one thing about HTTP/2,
+remember that it's stingy. Why use two bits when one will do. HTTP/2
+wants to optimize how we use the wire. That also means taking
+advantage of a persistent TCP connection, instead of opening a new one
+for every resource.
+</p>
+
+<p>
+It changes how efficiently we use the wire without changing HTTP/1.1's
+semantics.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Why Erlang?</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+The really short answer is that I'm an Erlanger. I've been working
+with Erlang web technologies, and saw that Erlang would eventually
+have a need for an HTTP/2 server, (and client for that matter). So,
+"because I love Erlang" was reason enough for me, but you're not
+me. Are you?
+</p>
+
+<p>
+In case you weren't sure; No, you're not. So let me talk a bit about
+why I like Erlang.
+</p>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">It's functional!</h4>
+<div class="outline-text-4" id="text-orgheadline4">
+<p>
+You all like functional languages right? When I first stared using
+Erlang and it was hard to get into. Once I did, I found it easier to
+express myself simply, especially with Pattern Matching
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">Pattern Matching</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+<p>
+Oh, I love pattern matching. Maybe show an example here.
+</p>
+</div>
+
+<ul class="org-ul"><li><a id="orgheadline6"></a>Pattern Matching a function clause<br  /><div class="outline-text-5" id="text-orgheadline6">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">int_to_string</span>(0) -&gt;
+    <span style="color: #3e999f;">"ZERO!"</span>;
+<span style="color: #f5871f;">int_to_string</span>(1) -&gt;
+    <span style="color: #3e999f;">"the loneliest number"</span>;
+<span style="color: #f5871f;">int_to_string</span>(2) -&gt;
+    <span style="color: #3e999f;">"two"</span>;
+<span style="color: #f5871f;">int_to_string</span>(3) -&gt;
+    <span style="color: #3e999f;">"III"</span>;
+<span style="color: #f5871f;">int_to_string</span>(<span style="color: #eab700;">SomeInt</span>) -&gt;
+    <span style="color: #8959a8;">integer_to_list</span>(<span style="color: #eab700;">SomeInt</span>).
+</pre>
+</div>
+
+<p>
+Basically, this lets us set up specific cases, and catch alls. Also,
+if you caught it up there, I'm using erlang's integer_to_list
+function. Because strings in Erlang are lists. Sometimes that's
+awesome and sometimes it's not. I promise, if you get into Erlang, you
+will at some point tableflip over this.
+</p>
+
+<p>
+People get hung up on Erlang's punctuation. To me it just seems like
+English. You have this idea (or "clause") but it's not complete. So
+you "end" it with a semicolon and keep going. When the idea is
+complete, you end it with a period instead.
+</p>
+</div></li></ul>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">Concurrency</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<p>
+Have you ever "slapped some concurrency" on a Java application? It's
+easy right? Just sub java.util.HashMap for
+java.util.concurrent.ConcurrentHashMap and you're done right?
+</p>
+
+<p>
+Erlang is really into concurrency and high availability. It was
+originally designed to run ericsson's telcom switches. So while a lot
+of languages, like Java, had concurrency bolted on after the fact,
+it's always been at Erlang's core.
+</p>
+
+<p>
+Erlang rocks the actor model for concurrency. Each actor lives in its
+own little world, it can receive messages from the outside, which it
+can then modify its world view based on. It can send it's own messages
+out into the world, and it can even create new actors.
+</p>
+
+<p>
+In Erlang, the actors are processes, and it's extremely easy to spin
+up a new one. Making that new one interesting is more of a challenge,
+but Erlang gives you some of that for free too, and we're going to get
+up in that soon.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">Links and Monitors</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+<p>
+When an Erlang process creates another process, it can also create a
+link to that process and monitor it. What that means is that basically
+if the child process crashes, the parent will get notified. This is
+key to Erlang's "let it crash" philosophy which basically celebrates
+the fact that's pretty easy to just start a replacement process if
+things go wrong.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">OTP</h4>
+<div class="outline-text-4" id="text-orgheadline9">
+<p>
+OTP is the Open Telcom Platform. It's a set of standard libraries that
+come with Erlang. "Telcom" is a throwback to when Erlang was built for
+telephone switches.  To be honest, I don't think it's even possible to
+get Erlang without OTP; however, with alternative languages for the
+Erlang VM like Elixir, it might be possible to get OTP without
+Erlang. Well, I mean, I'm not sure you can have Elixir without Erlang,
+since Exlir compiles to Erlang, so who knows?
+</p>
+
+<p>
+The point is, the line is very blurry. However, I am pretty sure that
+up until now I've just talked about Erlang.
+</p>
+
+<p>
+OTP gives us some behaviors to make working with the Actor model and
+process supervision easier
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">The Supervisor</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<p>
+In my HTTP/2 server, chatterbox, I have one supervisor, which is an
+OTP provided behavior.  It's a pretty simple one at that. I pretty
+much got it almost verbatim from Learn You Some Erlang, which is a
+great resource.
+</p>
+
+<p>
+What it's doing is setting up a socket to listen on whatever
+port. Then spawns N processes to sit there trying to accept
+connections. When a connection comes in, one of those processes snags
+it and starts doing stuff.
+</p>
+
+<p>
+Erlang has all sorts of cool ways of handling processes, but we're
+going to use "simple one for one" here. Simple one for one allows us
+to share the listener socket across all the children, and is totally
+cool when a child process terminates. It's also pretty cool with lots
+of children, all of which are the same kind of thing. It's a good
+choice for a web server.
+</p>
+
+<p>
+We spawn all these children as "temporary" which is telling the Erlang
+VM, don't worry if this one crashes, another client will connect,
+starting everything over again.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">Generic Finite State Machine</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<p>
+We talked a bit before about an actor having a "world view". Usually,
+it's just its internal perspective. So the actor should have some kind
+of state. OTP gives us this behavior called gen_fsm, which is like
+"Bring your own state and transitions" process. You tell it how to
+start up, what things make up the state and how to react to different
+message types and that's it. OTP takes care of actually sending and
+receiving those messages.
+</p>
+
+<p>
+What we want to do, is write an fsm that accepts something off the
+listener socket we specified in the supervisor, and then start
+interacting with the packets coming in over that connection. So we
+implement a gen_fsm, and tell the supervisor to start a bunch of
+them.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">Let's Apply some of this to HTTP/2</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+<p>
+We touched on only using one TCP connection for HTTP/2 requests,
+We can create a place in the gen_fsm's state where we keep the TCP
+socket, but that's not all we need, let's go back to the protocol.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">HTTP/2 Connections</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+<p>
+An HTTP/2 connection remains persistent between requests, and while
+HTTP/2 remains a stateless protocol, the connection maintains some
+state in the spirit of stinginess over the wire. So, we'll write a
+server process that maintains this in its state, but allows us to
+process individual requests in a stateless fashion.
+</p>
+
+<p>
+How can we do that? The HTTP/2 spec explains it!
+</p>
+
+<p>
+HTTP/2 uses multiplexed streams. These streams represent at most ONE
+request, which is semantically identical to an HTTP/1 request. So how
+do these streams work? What are they even for?
+</p>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">Frames</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<p>
+Let's go down to the 'atomic' level of HTTP/2. The smallest thing
+there is, is a frame. Well, is an atom the smallest thing. I guess
+not. I think the simile holds, because a frame is made up of a frame
+header and a frame payload. These are two smaller things, but if we
+ever broke them up, everything would pretty much explode.
+</p>
+
+<p>
+For right now, the most interesting thing about a frame header is that
+it contains a 31 bit stream identifier. So, the frame knows what
+stream it's a part of.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">Streams</h3>
+<div class="outline-text-3" id="text-orgheadline15">
+<p>
+So what's a stream? It's a logical abstraction over a
+connection. Physically, it's a sequence of frames. Where the
+connection is also a sequence of frames, the connection is THE
+sequence of frames. A stream is filtered by the ID. Most of them look
+like a series of frames sent by the client representing a request, and
+then a series of frames sent by the server representing the response.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">Stream 0</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+<p>
+Stream 0 is reserved for connection level frames. The meta-stream, as
+it were.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">Connection State</h3>
+<div class="outline-text-3" id="text-orgheadline17">
+<p>
+Streams are our old-fangled web requests and responses, and they're
+stateless like good semantically identical messages should be. So,
+let's talk about this connection thing and it's state.
+</p>
+
+<p>
+I already said that we're going to keep the TCP socket in the
+connection's state. The spec doesn't actually explicitly say we have
+to, but I can't imagine an implementation that doesn't. The spec does
+say that we have to keep track of some things. Let's start with the
+connection settings.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">SETTINGS</h3>
+<div class="outline-text-3" id="text-orgheadline18">
+<p>
+An HTTP/2 connection has six settings that affect it.
+</p>
+
+<ul class="org-ul">
+<li>SETTINGS_HEADER_TABLE_SIZE</li>
+<li>SETTINGS_ENABLE_PUSH</li>
+<li>SETTINGS_MAX_CONCURRENT_STREAMS</li>
+<li>SETTINGS_INITIAL_WINDOW_SIZE</li>
+<li>SETTINGS_MAX_FRAME_SIZE</li>
+<li>SETTINGS_MAX_HEADER_LIST_SIZE</li>
+</ul>
+
+<p>
+A server and client both send values for these settings to each other
+when they initially connect, and need to maintain these values in
+state for the duration of the connection, although they can agree to
+change them later in the connection if they want to.
+</p>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">HEADER_TABLE_SIZE</h4>
+<div class="outline-text-4" id="text-orgheadline19">
+<p>
+What's "HEADER_TABLE_SIZE"? It's the maximum size that the header
+table can take up in memory. What's the header table? Well, this is
+where HPACK comes into the picture. I could do a whole talk on HPACK,
+and I have! Go check out the video of my LambdaJam 2015 talk
+here. [link].
+</p>
+
+<p>
+The short version is that in order to save space on the wire, an
+HTTP/2 client maintains a cache of headers it has sent, and the server
+maintains a cache of headers it has received. Then the next time the
+client sends that header, it can send an index for the header and the
+server will be using the same index, so less bytes! Guess where this
+cache lives? That's right! It's the connection state. Oh and hey,
+they're different caches for requests and responses, so the client and
+server actually keep two caches in the state.
+</p>
+
+<p>
+Are you already thinking about race conditions? If you're not, it's
+because I haven't explained the details of an HPACK implementation
+well enough here, nor do I have time to. I promise we'll talk about
+the race condition tho. Just not right now.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">ENABLE_PUSH</h4>
+<div class="outline-text-4" id="text-orgheadline20">
+<p>
+This turns on push promises which are super cool, and it's a shame I'm
+going to gloss over them for now. Just imagine that you can send
+multiple responses to a single request. That's what push promises
+are. So if you're asked for HTML, you can respond with the HTML, CSS,
+JavaScript, and even images, that your HTML references.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">MAX_CONCURRENT_STREAMS</h4>
+<div class="outline-text-4" id="text-orgheadline21">
+<p>
+I touched briefly on the idea of streams. What we didn't talk about is
+that a stream is also a finite state machine. [Show it on a
+slide]. There are rules for what type of frame can come in while a
+stream is in a particular state and rules for what events transition
+into different states.
+</p>
+
+<p>
+Did I mention that frames have types? There are ten types and a
+frame's type is specified in the frame header. Isn't that exciting?
+You now know half of the things in the frame header, so don't say I
+didn't teach you something.
+</p>
+
+<p>
+All 2^31 - 1 streams begin in the 'idle' state, and when they're done,
+they end up 'closed'. Max concurrent streams sets a cap for how many
+streams can be in the other five states at any given time.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">INITIAL_WINDOW_SIZE</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<p>
+Initial window size? HTTP/2 brings flow control to HTTP. It allows the
+client and server to both set limits about how much data they're
+willing to accept. The good news here is that it only applies to DATA
+frames, which means "Request and Response bodies". Frames that tell
+the connection what to do with itself are exempt from flow control and
+can still get through.
+</p>
+
+<p>
+The initial window size is how much byte credit this connection
+has. The good news is that we're in charge of the credit limits, so if
+we receive ten bytes, the available credit goes down ten, but we can
+just extend the credit another ten. This allows us, as the server to
+receive bytes, keep them in memory, do stuff with them, throw them
+away, and then at that point issue more credit. This way, we use a
+finite amount of memory.
+</p>
+
+<p>
+BTW, issuing credit is done with a WINDOW_UPDATE frame, and can be
+done at the connection or stream level.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">MAX_FRAME_SIZE</h4>
+<div class="outline-text-4" id="text-orgheadline23">
+<p>
+OMG Frame payloads have size. A frame header contains a frame length
+which lets you know, after the header is over, how many of the
+following bytes before the next header. You're now 3 quarters of the
+way to knowing everything you need to know about frame headers, but
+that last quarter is the most complicated. This setting says what the
+maximum value for frame length can be.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24">MAX_HEADER_LIST_SIZE</h4>
+<div class="outline-text-4" id="text-orgheadline24">
+<p>
+Max header list size sounds like the same as HEADERS_TABLE_SIZE, but
+this is at the stream level and is basically a cap for how much
+headers data can be sent in a single request.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25">Settings Redux</h3>
+<div class="outline-text-3" id="text-orgheadline25">
+<p>
+Wow. In explaining these six settings, I think I got through a sizable
+chuck of the protocol. We talked about multiplexing, flow control,
+header compression, and server push! And that was just to set the
+stage for connection state.
+</p>
+
+<p>
+We'll need to store all six of these settings in the connection state,
+but they also imply even more state.
+</p>
+
+<p>
+We'll have to have a way of tracking:
+</p>
+
+<ul class="org-ul">
+<li>how many streams are active</li>
+<li>what our current credit balance is at the connection level</li>
+<li>what our current credit balance is at the stream level</li>
+<li>a cache of request headers received (decode context)</li>
+<li>a cache of response headers sent (encode context)</li>
+</ul>
+
+<p>
+By the way, each peer can have different values for these settings, so
+we'll actually need to keep track of the server's to know what we can
+receive and the client's to know what we can send.
+</p>
+
+<p>
+So we can store these all in an Erlang state record.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26">Gen_fsm State</h2>
+<div class="outline-text-2" id="text-orgheadline26">
+<p>
+I mentioned before that gen_fsm takes care of all the messy stuff
+so you can bring your own state. Well, now we know what we want our
+state to be. Of course, we have the option to change it, and in real
+life I just added one of these at a time as I tried to implement
+little slices of the spec.
+</p>
+
+<p>
+While Erlang seems to be moving away from this, I took the traditional
+route of declaring a record for my connection state.
+</p>
+
+<p>
+Records are a kind of hackey struct in Erlang. You declare one like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-record</span>(<span style="color: #4271ae;">connection_state</span>, {socket, max_frame_size}).
+</pre>
+</div>
+
+<p>
+But Erlang just treats it as a tuple like
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">{connection_state, <span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">MaxFrameSize</span>}.
+</pre>
+</div>
+
+<p>
+With some syntactic sugar:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">ConnectionState#<span style="color: #4271ae;">connection_state</span>.socket.
+<span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Which is basically</span>
+<span style="color: #f5871f;">element</span>(2, <span style="color: #eab700;">ConnectionState</span>).
+<span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Which can also be a pattern match</span>
+{connection_state, <span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">_</span>} = <span style="color: #eab700;">ConnectionState</span>.
+
+
+<span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Direct Access</span>
+<span style="color: #eab700;">Socket</span> = <span style="color: #eab700;">ConnectionState</span>#<span style="color: #4271ae;">connection_state</span>.socket.
+<span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Pattern Matching</span>
+#<span style="color: #4271ae;">connection_state</span>{socket=<span style="color: #eab700;">Socket</span>} = <span style="color: #eab700;">ConnectionState</span>.
+<span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Create a modified copy</span>
+<span style="color: #eab700;">NewConnectionState</span>
+    = <span style="color: #eab700;">ConnectionState</span>#<span style="color: #4271ae;">connection_state</span>{socket=<span style="color: #eab700;">NewSocket</span>}.
+</pre>
+</div>
+
+<p>
+The only difference is that if I change the record declaration later,
+the first method of accessing it still works, unless I change the
+record so "socket" isn't a thing anymore.
+</p>
+
+<p>
+The second way breaks if I move the order of things.
+</p>
+
+<p>
+The third way breaks if I change the order of things OR the number of fields.
+</p>
+
+<p>
+The point is that records can be brittle, but I'm used to them. Maps
+seem like the future, but when I started this project, the
+implementation was incomplete. It's not incomplete now, so give them a
+shot :D
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-2">
+<h2 id="orgheadline27">Gen_fsm callbacks</h2>
+<div class="outline-text-2" id="text-orgheadline27">
+<p>
+Gen_fsm does the heavy lifting, but you do have to write some code you
+know? In a gen_fsm's life cycle, there are six callbacks that we'll
+need to define, even if they don't wind up doing anything. there's
+also callbacks that need to be defined for each state, but we're
+getting ahead of ourselves.
+</p>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28">init/1</h3>
+<div class="outline-text-3" id="text-orgheadline28">
+<p>
+init runs one time on start up. It takes anything as an argument, but
+usually it's a list. Even if you have nothing to tell it, it'll take
+the empty list `[]`.
+</p>
+
+<p>
+Remember when we spawned a bunch of processes to listen on a
+socket. These are they, and init is being passed a socket for it to
+toss in to the state.
+</p>
+
+<p>
+init/1 returns the initial state of the server. It goes a little
+something like this, hit it!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">init</span>([{<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">ListenSocket</span>}, <span style="color: #eab700;">SSLOptions</span>]) -&gt;
+    {ok, <span style="color: #eab700;">Ref</span>} = <span style="color: #4271ae;">prim_inet</span>:<span style="color: #4271ae;">async_accept</span>(<span style="color: #eab700;">ListenSocket</span>, -1),
+    {ok,
+     accept,
+     #<span style="color: #4271ae;">connection_state</span>{
+        listen_ref=<span style="color: #eab700;">Ref</span>,
+        socket = {<span style="color: #eab700;">Transport</span>, undefined},
+        ssl_options = <span style="color: #eab700;">SSLOptions</span>
+        }}.
+</pre>
+</div>
+
+<p>
+What we're saying here is to go ahead and just spawn an acceptor
+somewhere. When a connection comes along we'll get a process message
+that let's us know and we'll deal with it then. We'll store some of
+this information in the FSM's state, and then transition into the
+accept state, where we wait for a client to come along.
+</p>
+
+
+<p>
+handle_info/2 is for messages that are not managed by the gen_fsm
+messaging API. An example of this has to do with the socket we just
+opened. If it closes unexpectedly, it will send a message to our
+gen_fsm (isn't Erlang cool?) and since it's not a normal
+gen_fsmy message, we need a handle_info callback clause to deal
+with it.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handle_info</span>({tcp_closed, <span style="color: #eab700;">_Socket</span>}, <span style="color: #eab700;">_StateName</span>, <span style="color: #eab700;">State</span>) -&gt;
+    {stop, normal, <span style="color: #eab700;">S</span>};
+</pre>
+</div>
+
+<p>
+{tcp_closed, _Socket} is the message, and State is the actual server
+state. We could do something with this if we were trying to salvage
+the process, but since the socket being closed means this connection
+is done with, we just stop the server.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handle_info</span>({inet_async, <span style="color: #eab700;">_ListSock</span>, <span style="color: #eab700;">Ref</span>, {ok, <span style="color: #eab700;">CliSocket</span>}},
+    accept,
+    <span style="color: #eab700;">S</span>=#<span style="color: #4271ae;">connection_state</span>{
+        ssl_options = <span style="color: #eab700;">SSLOptions</span>,
+        socket = {<span style="color: #eab700;">Transport</span>, undefined},
+        listen_ref = <span style="color: #eab700;">Ref</span>
+    }) -&gt;
+    <span style="color: #4271ae;">inet_db</span>:<span style="color: #4271ae;">register_socket</span>(<span style="color: #eab700;">CliSocket</span>, inet_tcp),
+    <span style="color: #eab700;">Socket</span> = <span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span> <span style="color: #718c00;">of</span>
+        gen_tcp -&gt;
+            <span style="color: #eab700;">CliSocket</span>;
+        ssl -&gt;
+            {ok, <span style="color: #eab700;">AcceptSocket</span>} = <span style="color: #4271ae;">ssl</span>:<span style="color: #4271ae;">ssl_accept</span>(<span style="color: #eab700;">CliSocket</span>, <span style="color: #eab700;">SSLOptions</span>),
+            <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">TODO: Erlang 18 uses ALPN</span>
+            {ok, <span style="color: #eab700;">_Upgrayedd</span>} = <span style="color: #4271ae;">ssl</span>:<span style="color: #4271ae;">negotiated_next_protocol</span>(<span style="color: #eab700;">AcceptSocket</span>),
+            <span style="color: #eab700;">AcceptSocket</span>
+        <span style="color: #718c00;">end</span>,
+    <span style="color: #4271ae;">chatterbox_sup</span>:<span style="color: #4271ae;">start_socket</span>(),
+
+    {next_state,
+     handshake,
+     <span style="color: #eab700;">S</span>#<span style="color: #4271ae;">connection_state</span>{
+       socket = {<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}
+     },
+     0};
+</pre>
+</div>
+
+<p>
+"Transport" tells us if we're going to use the `gen_tcp` or `ssl`
+module for handling sockets. After the setup they're pretty much the
+same, so let's just assume we're using `gen_tcp` from here on out. so
+the slides are easier to read.
+</p>
+
+<p>
+We open up another process for listening on the Listener socket, so
+there's always something ready to accept new connections.
+</p>
+
+<p>
+After this socket accepting is done, we store the socket in the FSM
+state and transtition into the `handshake` state.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29">StateName Callbacks</h3>
+<div class="outline-text-3" id="text-orgheadline29">
+<p>
+StateName/2 and StateName/3. They're pretty much the same. They both
+receive a message and and then transition into another state. The only
+difference is that the `/3` sends a response. `/2` doesn't need one.
+</p>
+
+<p>
+Then we define a function that explains to gen_fsm what to do when it
+times out in the a handshake state. This is our first example of the
+StateName/2 callback.
+</p>
+
+<p>
+[Note: accept didn't need one, since it was triggered by handle_info]
+</p>
+
+<p>
+StateName/2 needs to return one of 4 results:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang">{next_state,<span style="color: #eab700;">NextStateName</span>,<span style="color: #eab700;">NewStateData</span>}
+{next_state,<span style="color: #eab700;">NextStateName</span>,<span style="color: #eab700;">NewStateData</span>,<span style="color: #eab700;">Timeout</span>}
+{next_state,<span style="color: #eab700;">NextStateName</span>,<span style="color: #eab700;">NewStateData</span>,hibernate}
+{stop,<span style="color: #eab700;">Reason</span>,<span style="color: #eab700;">NewStateData</span>}
+</pre>
+</div>
+
+<p>
+But we're most interested in the second and last. Let's talk about the
+last real quick. It stops things if we find an error. HTTP/2 has a way
+to close the connection if we find an error too!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handshake</span>(timeout,
+          <span style="color: #eab700;">StateWithSocket</span>=#<span style="color: #4271ae;">connection_state</span>{
+            socket={<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}
+          }) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">AcceptSocket</span>, 24, 5000) <span style="color: #718c00;">of</span>
+        {ok, &lt;&lt;<span style="color: #3e999f;">"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"</span>&gt;&gt;} -&gt;
+            {next_state, connected, <span style="color: #eab700;">StateWithSocket</span>, 0};
+        <span style="color: #eab700;">_</span> -&gt;
+            {next_state, closing, <span style="color: #eab700;">StateWithSocket</span>, 0}
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-3">
+<h3 id="orgheadline30">GO AWAY</h3>
+<div class="outline-text-3" id="text-orgheadline30">
+<p>
+There's an HTTP/2 Frame called "go away" that tells the connection
+that we can't recover. There are lots of reasons this could happen,
+and some of them even have specific codes!
+</p>
+
+<p>
+We'll write a function for that:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">go_away</span>(<span style="color: #eab700;">ErrorCode</span>,
+         <span style="color: #eab700;">State</span> = #<span style="color: #4271ae;">connection_state</span>{
+                   socket={<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>},
+                    next_available_stream_id=<span style="color: #eab700;">NAS</span>
+                  }) -&gt;
+    <span style="color: #eab700;">GoAway</span> = #<span style="color: #4271ae;">goaway</span>{
+                last_stream_id=<span style="color: #eab700;">NAS</span>,
+                error_code=<span style="color: #eab700;">ErrorCode</span>
+               },
+    <span style="color: #eab700;">GoAwayBin</span> = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">to_binary</span>({#<span style="color: #4271ae;">frame_header</span>{
+                                          stream_id=0
+                                         }, <span style="color: #eab700;">GoAway</span>}),
+    <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">send</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">GoAwayBin</span>),
+    {next_state, closing, <span style="color: #eab700;">State</span>, 0}.
+</pre>
+</div>
+
+<p>
+It will actually send to go_away frame and then transition into the
+`closing`, which might look like this.
+</p>
+
+
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">closing</span>(<span style="color: #eab700;">Message</span>, <span style="color: #eab700;">State</span>=#<span style="color: #4271ae;">connection_state</span>{
+        socket={<span style="color: #eab700;">_</span>, undefined}
+    }) -&gt;
+    <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Does nothing if socket is undefined</span>
+    {stop, normal, <span style="color: #eab700;">State</span>};
+<span style="color: #f5871f;">closing</span>(<span style="color: #eab700;">Message</span>, <span style="color: #eab700;">State</span>=#<span style="color: #4271ae;">connection_state</span>{
+        socket={<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}
+    }) -&gt;
+    <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Closes the socket otherwise</span>
+    <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">close</span>(<span style="color: #eab700;">Socket</span>),
+    {stop, normal, <span style="color: #eab700;">State</span>}.
+</pre>
+</div>
+
+<p>
+We add another clause to cover if we don't have a socket set yet, so
+it will do everything but close the socket.
+</p>
+
+<p>
+So our go_away function effectively closes the connection with a
+reason. We're going to use it if we have any problems establishing the
+connection in the accept state.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handshake</span>(timeout,
+          <span style="color: #eab700;">StateWithSocket</span>=#<span style="color: #4271ae;">connection_state</span>{
+            socket={<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}
+          }) -&gt;
+</pre>
+</div>
+
+<p>
+And now we have an FSM just sitting around with an open socket. Just
+opening a socket's never been so easy! Now what?
+</p>
+
+<p>
+We still need to start the connection. Fortunately for us, every
+HTTP/2 connection begins with a preamble: "PRI *
+HTTP/2.0\r\n\r\nSM\r\n\r\n". It's 24 characters of fried gold. Let's
+ask for it immediately:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">{ok, &lt;&lt;<span style="color: #3e999f;">"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"</span>&gt;&gt;}
+    = <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">AcceptSocket</span>, 24, 5000),
+{next_state, connected, <span style="color: #eab700;">StateWithSocket</span>, 0}.
+</pre>
+</div>
+
+<p>
+Those carets around the string means it's a binary! Let's go ahead and
+store that accepted socket in the state and transition into the
+connected state where we'll read frames.
+</p>
+
+<p>
+but what if that doesn't come over? Well, this thing will explode,
+which I guess is ok since we're never going to do our job as an HTTP/2
+server anyway, but we don't have to be obnoxious about it.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #8959a8;">length</span>(?<span style="color: #4271ae;">PREAMBLE</span>), 5000) <span style="color: #718c00;">of</span>
+    {ok, &lt;&lt;&lt;<span style="color: #3e999f;">"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"</span>&gt;&gt;} -&gt;
+        {next_state, connected, <span style="color: #eab700;">StateWithSocket</span>, 0};
+    <span style="color: #eab700;">_</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateWithSocket</span>)
+<span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+That'll stop the server from doing anything when we know we're done
+and actually closes the socket tidily.
+</p>
+
+<p>
+Now we're started up. We've received this, everything else will be a
+HTTP/2 frame. Another thing we know from the RFC, is that a frame
+header will always be nine bytes. So let's look at some code to pull a
+frame off the wire:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">{ok, <span style="color: #eab700;">FrameHeaderBin</span>} = <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, 9),
+<span style="color: #eab700;">FrameHeader</span> = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read_binary_frame_header</span>(<span style="color: #eab700;">FrameHeaderBin</span>),
+{ok, <span style="color: #eab700;">FramePayloadBin</span>} = <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">FrameHeader</span>#<span style="color: #4271ae;">frame_header</span>.length),
+</pre>
+</div>
+
+<p>
+We'll wrap it in something like
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>({<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}, <span style="color: #eab700;">Timeout</span>).
+</pre>
+</div>
+
+<p>
+So you don't have to worry about it.
+</p>
+
+<p>
+So what's the magic behind read_binary_frame_header?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read_binary_frame_header</span>(&lt;&lt;<span style="color: #eab700;">Length</span>:24,<span style="color: #eab700;">Type</span>:8,<span style="color: #eab700;">Flags</span>:8,<span style="color: #eab700;">_R</span>:1,<span style="color: #eab700;">StreamId</span>:31,<span style="color: #eab700;">_Rem</span>/bits&gt;&gt;) -&gt;
+    #<span style="color: #4271ae;">frame_header</span>{
+        length = <span style="color: #eab700;">Length</span>,
+        type = <span style="color: #eab700;">Type</span>,
+        flags = <span style="color: #eab700;">Flags</span>,
+        stream_id = <span style="color: #eab700;">StreamId</span>
+    }.
+</pre>
+</div>
+
+<p>
+Pattern matching is fun. See the carets around everything? This is a
+binary. Notice those numbers! They're in bit counts not byte counts
+because StreamId is 31 bits. My Sega Genesis was only 16 bits. The
+`/bits` at the end is what makes this possible.
+</p>
+
+<p>
+So great! We know the finite number of bytes to pull of wire to get a
+frame. But this is a server, not a for loop. I mean, what's a for loop?
+</p>
+
+<p>
+We basically need to write a `connected/2` callback for our gen_fsm to
+handle a single frame on timeout.
+</p>
+
+<p>
+The real fun is going to be in connected/2, because we're going to
+read frames one at a time and process them.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">connected</span>(timeout, <span style="color: #eab700;">State</span>=#<span style="color: #4271ae;">connection_state</span>{
+                            socket=<span style="color: #eab700;">Socket</span>
+                        }) -&gt;
+    {<span style="color: #eab700;">FrameHeader</span>, <span style="color: #eab700;">Payload</span>} = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>(<span style="color: #eab700;">Socket</span>),
+    <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Do stuff, Maybe define "NewState" with an updated</span>
+    <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">value for our remaining flow control credits maybe?</span>
+    <span style="color: #4271ae;">route_frame</span>({<span style="color: #eab700;">FrameHeader</span>, <span style="color: #eab700;">Payload</span>}, <span style="color: #eab700;">State</span>).
+
+<span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">route_frame</span>(<span style="color: #4271ae;">http2_frame</span>(), <span style="color: #4271ae;">connection_state</span>())
+    -&gt;<span style="color: #f5871f;"> </span>{next_state,
+        connected | continuation | closing,
+        <span style="color: #4271ae;">connection_state</span>(),
+        <span style="color: #8959a8;">non_neg_integer</span>()}.
+<span style="color: #f5871f;">route_frame</span>(<span style="color: #eab700;">_</span>, <span style="color: #eab700;">State</span>) -&gt;
+    {next_state, connected, <span style="color: #eab700;">State</span>, 0}.
+</pre>
+</div>
+
+<p>
+The function clause is "yet another pattern match" which is looking
+for this function to have two arguments: a message `next` and a
+bound variable `State`. By bound, I mean we can use `State` anywhere
+in the function body and it will mean this thing that was passed
+in. Also, you can't change it!
+</p>
+
+<p>
+After the hashmark, we're saying this is a connection_state
+record. That means that if anything that's not an connection_state
+record is passed in here, it won't match this clause. Since that is
+our only clause, this will blow up on a `badmatch` if any other
+message comes in.
+</p>
+
+<p>
+We could add a catch all like this tho:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">connected</span>(<span style="color: #eab700;">AnyMessage</span>, <span style="color: #eab700;">AnythingButProbablyState</span>) -&gt;
+    <span style="color: #4271ae;">io</span>:<span style="color: #4271ae;">format</span>(<span style="color: #3e999f;">"Unexpected message: ~p~n"</span>, [<span style="color: #eab700;">AnyMessage</span>]),
+    <span style="color: #4271ae;">io</span>:<span style="color: #4271ae;">format</span>(<span style="color: #3e999f;">"Unexpected state: ~p~n"</span>, [<span style="color: #eab700;">AnythingButProbablyState</span>])
+    {next_state, connected, <span style="color: #eab700;">AnythingButProbablyState</span>, 0}.
+</pre>
+</div>
+
+<p>
+io:format, it's like printf/puts/System.out.println for Erlang!
+</p>
+
+<p>
+So this does nothing. Well, I refactored the frame reading code into
+one function call, as you can imagine we're going to call it
+alot. We'll "do stuff" later, but right now we need the skeleton of
+the server in place, which is what this is. We're also going to have
+it return the same return values that gen_fsm:StateName/2 would
+return.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31">Back to the Protocol</h3>
+<div class="outline-text-3" id="text-orgheadline31">
+<p>
+The rest should be as easy as routing these frames to different parts
+of the process, right? Well, the RFC has its own ideas.
+</p>
+
+<p>
+It's first idea is that there's to be a settings handshake at the
+beginning of every connection. When you think about it, it makes a ton
+of sense. Each side of the connection needs to know what the other
+expects. It's the foundation of an healthy relationship!
+</p>
+
+<p>
+The RFC also says that whenever you receive a SETTINGS frame&#x2026; Oooh!
+SETTINGS is one of the types of frames we talked about! Anyway, when
+you get one, you have to acknowledge it, so your peer knew you got
+it. So, to send an ACK, you send a SETTINGS frame back with the ACK
+flag set in the frame header. OMG It's the final component of the
+frame header: FLAGS!
+</p>
+
+<p>
+So in the beginning, two pairs of SETTINGS frames are
+exchanged. great. We could put this in the handshake callback, and it
+would look like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handshake</span>(timeout,
+          <span style="color: #eab700;">StateWithSocket</span>=#<span style="color: #4271ae;">connection_state</span>{
+            socket={<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}
+          }) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #8959a8;">length</span>(?<span style="color: #4271ae;">PREAMBLE</span>), 5000) <span style="color: #718c00;">of</span>
+        {ok, &lt;&lt;&lt;<span style="color: #3e999f;">"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"</span>&gt;&gt;} -&gt;
+            {next_state, connected, <span style="color: #eab700;">StateWithSocket</span>, 0};
+        <span style="color: #eab700;">_</span> -&gt;
+            <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateWithSocket</span>)
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+So, that's were we last left it. Let's add the settings handshake to
+the accept state. All of this work is going to happen in this `case`
+statement.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #8959a8;">length</span>(?<span style="color: #4271ae;">PREAMBLE</span>), 5000) <span style="color: #718c00;">of</span>
+    {ok, &lt;&lt;?<span style="color: #4271ae;">PREAMBLE</span>&gt;&gt;} -&gt;
+        <span style="color: #eab700;">ServerSettings</span> = #<span style="color: #4271ae;">settings</span>{} <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">defaults!</span>
+        <span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">send</span>({<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>},
+                                  #<span style="color: #4271ae;">settings</span>{}, <span style="color: #eab700;">ServerSettings</span>),
+
+        <span style="color: #eab700;">ClientSettingsFrame</span>
+          = {<span style="color: #eab700;">FH</span>, <span style="color: #eab700;">_FPayload</span>}
+          = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>({<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>}, 5000),
+
+        {next_state, connected,
+         <span style="color: #eab700;">StateWithSocket</span>#<span style="color: #4271ae;">connection_state</span>{
+             send_settings = <span style="color: #eab700;">ClientSettings</span>,
+             recv_settings = <span style="color: #eab700;">ServerSettings</span>
+         },0};
+    <span style="color: #eab700;">BadPreamble</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateWithSocket</span>)
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">send</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">CurrentSettings</span>, <span style="color: #eab700;">NewSettings</span>),
+<span style="color: #eab700;">Frame</span> = {<span style="color: #eab700;">FH</span>, <span style="color: #eab700;">_FPayload</span>} = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>({<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>}, 5000),
+</pre>
+</div>
+
+
+<p>
+The way http2_frame handles this, is by reading the first 9 bytes and
+pattern matching. We already saw this earlier. Once we've read those 9
+bytes we know what type of frame it is, and how long it is, so we can
+parse the rest of the frame:
+</p>
+
+<p>
+First thing we'll do is define a callback in http2_frame like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-callback</span> <span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>::<span style="color: #4271ae;">binary</span>(),
+                      <span style="color: #eab700;">Header</span>::<span style="color: #4271ae;">frame_header</span>()) -&gt;
+    {ok, <span style="color: #4271ae;">payload</span>()} | {error, <span style="color: #8959a8;">term</span>()}.
+</pre>
+</div>
+
+<p>
+We've got this "type" we've created called `payload` which can be the
+parsed data from any of the ten frame types. We'll create a new module
+for each type that implements this callback.
+</p>
+
+<p>
+So let's walk through the process for reading the client settings
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #4271ae;">read_header</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">Timeout</span>) <span style="color: #718c00;">of</span>
+        {error, <span style="color: #eab700;">Reason</span>} -&gt;
+            {error, <span style="color: #eab700;">Reason</span>};
+        <span style="color: #eab700;">FrameHeader</span> -&gt;
+            {ok, <span style="color: #eab700;">Payload</span>} = <span style="color: #4271ae;">read_payload</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">FrameHeader</span>, <span style="color: #eab700;">Timeout</span>),
+            {<span style="color: #eab700;">FrameHeader</span>, <span style="color: #eab700;">Payload</span>}
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+So read_header we've already seen. Actually, we saw the straight
+binary version. Here's the TCP version.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read_header</span>({<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, 9, <span style="color: #eab700;">Timeout</span>) <span style="color: #718c00;">of</span>
+        {ok, <span style="color: #eab700;">HeaderBytes</span>} -&gt;
+            {<span style="color: #eab700;">Header</span>, &lt;&lt;&gt;&gt;} = <span style="color: #4271ae;">read_binary_frame_header</span>(<span style="color: #eab700;">HeaderBytes</span>),
+            <span style="color: #eab700;">Header</span>;
+        <span style="color: #eab700;">E</span> -&gt;<span style="color: #f5871f;"> </span><span style="color: #eab700;">E</span>
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+This recv reads the next 9 bytes off the wire and then passes it to
+the function we saw before with the binary pattern match.
+</p>
+
+<p>
+But I'll show it to you again because I like you.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read_binary_frame_header</span>(&lt;&lt;<span style="color: #eab700;">Length</span>:24,<span style="color: #eab700;">Type</span>:8,<span style="color: #eab700;">Flags</span>:8,<span style="color: #eab700;">_R</span>:1,<span style="color: #eab700;">StreamId</span>:31,<span style="color: #eab700;">Rem</span>/bits&gt;&gt;) -&gt;
+    <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{
+        length = <span style="color: #eab700;">Length</span>,
+        type = <span style="color: #eab700;">Type</span>,
+        flags = <span style="color: #eab700;">Flags</span>,
+        stream_id = <span style="color: #eab700;">StreamId</span>
+    },
+    {<span style="color: #eab700;">Header</span>, <span style="color: #eab700;">Rem</span>}.
+</pre>
+</div>
+
+<p>
+So, cool. This function is a little different. It's built so we can
+read binaries of any size! So from a functional perspective, we're not
+limited to reading bytes as we need them off a socket. This would be
+more useful if we were using an active socket.
+</p>
+
+<p>
+So, back to `read/2`:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #4271ae;">read_header</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">Timeout</span>) <span style="color: #718c00;">of</span>
+        {error, <span style="color: #eab700;">Reason</span>} -&gt;
+            {error, <span style="color: #eab700;">Reason</span>};
+        <span style="color: #eab700;">FrameHeader</span> -&gt;
+            {ok, <span style="color: #eab700;">Payload</span>} = <span style="color: #4271ae;">read_payload</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">FrameHeader</span>, <span style="color: #eab700;">Timeout</span>),
+            {<span style="color: #eab700;">FrameHeader</span>, <span style="color: #eab700;">Payload</span>}
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+Once we've got the frame header, we need to read the payload, and we
+get to do some fun pattern matching again.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read_payload</span>(<span style="color: #eab700;">_</span>, #<span style="color: #4271ae;">frame_header</span>{length=0}, <span style="color: #eab700;">_Timeout</span>) -&gt;
+    {ok, <span style="color: #eab700;">FramePayload</span>, &lt;&lt;&gt;&gt;} = <span style="color: #4271ae;">read_binary_payload</span>(&lt;&lt;&gt;&gt;, <span style="color: #eab700;">Header</span>),
+    {ok, <span style="color: #eab700;">FramePayload</span>};
+<span style="color: #f5871f;">read_payload</span>({<span style="color: #eab700;">Transport</span>, <span style="color: #eab700;">Socket</span>}, <span style="color: #eab700;">Header</span>=#<span style="color: #4271ae;">frame_header</span>{length=<span style="color: #eab700;">L</span>}, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">L</span>, <span style="color: #eab700;">Timeout</span>) <span style="color: #718c00;">of</span>
+        {ok, <span style="color: #eab700;">DataBin</span>} -&gt;
+            {ok, <span style="color: #eab700;">FramePayload</span>, &lt;&lt;&gt;&gt;} = <span style="color: #4271ae;">read_binary_payload</span>(<span style="color: #eab700;">DataBin</span>, <span style="color: #eab700;">Header</span>),
+            {ok, <span style="color: #eab700;">FramePayload</span>};
+        <span style="color: #eab700;">E</span> -&gt;<span style="color: #f5871f;"> </span><span style="color: #eab700;">E</span>
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+read_payload pattern matches on length of the header. If it's 0 do
+nothing, otherwise read those bytes off the socket, then send them off
+to read_binary_payload. 0 actually means "read everything!" so we make
+sure to skip the call to `recv`
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">DATA</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_data</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">HEADERS</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_headers</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">PRIORITY</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_priority</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">RST_STREAM</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_rst_stream</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">SETTINGS</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">PUSH_PROMISE</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_push_promise</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">PING</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_ping</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">GOAWAY</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_goaway</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">WINDOW_UPDATE</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_window_update</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>);
+<span style="color: #f5871f;">read_binary_payload</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span> = #<span style="color: #4271ae;">frame_header</span>{type=?<span style="color: #4271ae;">CONTINUATION</span>}) -&gt;
+    <span style="color: #4271ae;">http2_frame_continuation</span>:<span style="color: #4271ae;">read_binary</span>(<span style="color: #eab700;">Bin</span>, <span style="color: #eab700;">Header</span>).
+</pre>
+</div>
+
+<p>
+This one pattern matches on frame_type and calls the callback in the
+appropriate module.
+</p>
+
+<p>
+Our read_binary function in http2_frame_settings understands how to
+turn this binary into a list of settings, and then how to overlay
+those settings on top of the defaults. These steps are broken up
+because an unset represents "no change" not "default value".
+</p>
+
+<p>
+So, now out of the rabbit hole back to the accept state!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #8959a8;">length</span>(?<span style="color: #4271ae;">PREAMBLE</span>), 5000) <span style="color: #718c00;">of</span>
+    {ok, &lt;&lt;?<span style="color: #4271ae;">PREAMBLE</span>&gt;&gt;} -&gt;
+        <span style="color: #eab700;">StateToRouteWith</span> = <span style="color: #4271ae;">send_settings</span>(<span style="color: #eab700;">StateWithSocket</span>),
+
+        <span style="color: #eab700;">ClientSettingsFrame</span>
+          = {<span style="color: #eab700;">FH</span>, <span style="color: #eab700;">ClientSettings</span>}
+          = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>({<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>}, 5000),
+
+        {next_state, connected,
+         <span style="color: #eab700;">StateWithSocket</span>#<span style="color: #4271ae;">connection_state</span>{
+             send_settings = <span style="color: #eab700;">ClientSettings</span>,
+             recv_settings = <span style="color: #eab700;">ServerSettings</span>
+         },0};
+    <span style="color: #eab700;">BadPreamble</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateWithSocket</span>)
+<span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+We've got the ClientSettings list. We need to overlay it on the spec's defaults:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">NewSendSettings
+    = <span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">overlay</span>(#<span style="color: #4271ae;">settings</span>{},
+                                   <span style="color: #eab700;">ClientSettings</span>),
+</pre>
+</div>
+
+<p>
+What's #settings{}?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-record</span>(<span style="color: #4271ae;">settings</span>, {header_table_size        = 4096,
+                   enable_push              = 1,
+                   max_concurrent_streams   = unlimited,
+                   initial_window_size      = 65535,
+                   max_frame_size           = 16384,
+                   max_header_list_size     = unlimited}).
+</pre>
+</div>
+
+<p>
+Those are the defaults from the spec.
+</p>
+
+<p>
+Settings frames can come at any time and change the state of
+the connection. Since this can happen more than once, we should have a
+function for this.
+</p>
+
+<p>
+Turns out, we already do. Remember `route_frame`? Well let's make it
+do this job for us. Right now it just does nothing and returns the
+state you pass in, but that's no way to live. This is the first of
+many route_frame clauses.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">route_frame</span>(<span style="color: #eab700;">_</span>, <span style="color: #eab700;">State</span>) -&gt;<span style="color: #f5871f;"> </span>{next_state, continuation, <span style="color: #eab700;">State</span>}.
+</pre>
+</div>
+
+<p>
+This is just the basic client settings receipt:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">route_frame</span>({<span style="color: #eab700;">H</span>, <span style="color: #eab700;">Payload</span>}, <span style="color: #eab700;">S</span> = #<span style="color: #4271ae;">connection_state</span>{
+                                 socket=<span style="color: #eab700;">Socket</span>,
+                                 send_settings=<span style="color: #eab700;">SS</span>
+                                })
+    <span style="color: #718c00;">when</span> <span style="color: #eab700;">H</span>#<span style="color: #4271ae;">frame_header</span>.type == ?<span style="color: #4271ae;">SETTINGS</span>,
+         ?<span style="color: #4271ae;">NOT_FLAG</span>(<span style="color: #eab700;">H</span>#<span style="color: #4271ae;">frame_header</span>.flags, ?<span style="color: #4271ae;">FLAG_ACK</span>) -&gt;
+</pre>
+</div>
+
+<p>
+`when` is a guard. It's kinda for when you can't use pattern matching
+for some reason. I could have done the header type in a pattern match,
+but the flags thing had to happen in a guard because it's more than
+just a match. It's a bitwise and!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-define</span>(<span style="color: #eab700;">IS_FLAG</span>(<span style="color: #eab700;">Flags</span>, <span style="color: #eab700;">Flag</span>), <span style="color: #eab700;">Flags</span> <span style="color: #8959a8;">band</span> <span style="color: #eab700;">Flag</span> =:= <span style="color: #eab700;">Flag</span>).
+<span style="color: #8959a8;">-define</span>(<span style="color: #eab700;">NOT_FLAG</span>(<span style="color: #eab700;">Flags</span>, <span style="color: #eab700;">Flag</span>), <span style="color: #eab700;">Flags</span> <span style="color: #8959a8;">band</span> <span style="color: #eab700;">Flag</span> =/= <span style="color: #eab700;">Flag</span>).
+</pre>
+</div>
+
+<p>
+See what I did here? Each bit of `Flags` means something. ?FLAG_ACK is
+a 1 in bit 0, which coincidentally, is also 1.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">NewSendSettings = <span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">overlay</span>(<span style="color: #eab700;">SS</span>, <span style="color: #eab700;">Payload</span>),
+
+<span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">ack</span>(<span style="color: #eab700;">Socket</span>),
+{next_state,
+ connected,
+ <span style="color: #eab700;">S</span>#<span style="color: #4271ae;">connection_state</span>{
+                    send_settings=<span style="color: #eab700;">NewSendSettings</span>
+ }};
+</pre>
+</div>
+
+<p>
+There's more to be done here, as far as flow control goes. And we
+haven't even gotten to frames yet, so let's move on.
+</p>
+
+<p>
+Let's go use this route_frame function in `handshake/2`
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #8959a8;">length</span>(?<span style="color: #4271ae;">PREAMBLE</span>), 5000) <span style="color: #718c00;">of</span>
+    {ok, &lt;&lt;?<span style="color: #4271ae;">PREAMBLE</span>&gt;&gt;} -&gt;
+        <span style="color: #eab700;">StateToRouteWith</span> = <span style="color: #4271ae;">send_settings</span>(<span style="color: #eab700;">StateWithSocket</span>),
+
+        <span style="color: #eab700;">Frame</span> = {<span style="color: #eab700;">FH</span>, <span style="color: #eab700;">_FPayload</span>} = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>({<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>}, 5000),
+
+        <span style="color: #718c00;">try</span> <span style="color: #eab700;">FH</span>#<span style="color: #4271ae;">frame_header</span>.type <span style="color: #718c00;">of</span>
+            ?<span style="color: #4271ae;">SETTINGS</span> -&gt;
+                <span style="color: #4271ae;">route_frame</span>(<span style="color: #eab700;">Frame</span>, <span style="color: #eab700;">StateToRouteWith</span>);
+            <span style="color: #eab700;">_</span> -&gt;
+                <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateToRouteWith</span>)
+        <span style="color: #718c00;">catch</span>
+            <span style="color: #eab700;">_</span>:<span style="color: #eab700;">_</span> -&gt;
+                <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateToRouteWith</span>)
+        <span style="color: #718c00;">end</span>;
+    <span style="color: #eab700;">BadPreamble</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateWithSocket</span>)
+<span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+See that 5000 up there? It's saying that this should be an error case
+if we don't get a frame in 5 seconds. We need to do a few more things
+in here to make it work.
+</p>
+
+<p>
+We have a way of timing out if we haven't received a clients settings
+frame in 5 seconds. But what do we do about the ack of the server
+settings?
+</p>
+
+<p>
+The spec actually tells us something here:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-plaintext">6.5.3.  Settings Synchronization
+If the sender of a SETTINGS frame does not receive an acknowledgement
+within a reasonable amount of time, it MAY issue a connection error
+(Section 5.4.1) of type SETTINGS_TIMEOUT.
+</pre>
+</div>
+
+<p>
+An OPTIONAL requirement! How will we do it?
+</p>
+
+<p>
+First of all, we're going to not apply our settings until we receive
+the ACK. We just send them and use the spec's defaults for now. But
+we're going to add a little more logic to the send.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">send_settings</span>(<span style="color: #eab700;">State</span> = #<span style="color: #4271ae;">connection_state</span>{
+                         recv_settings=<span style="color: #eab700;">CurrentSettings</span>,
+                         socket=<span style="color: #eab700;">Socket</span>,
+                         settings_sent=<span style="color: #eab700;">SS</span>
+                        }) -&gt;
+    <span style="color: #eab700;">NewSettings</span> = <span style="color: #4271ae;">chatterbox</span>:<span style="color: #4271ae;">settings</span>(),
+    <span style="color: #eab700;">Ref</span> = <span style="color: #8959a8;">make_ref</span>(),
+
+    <span style="color: #4271ae;">http2_frame_settings</span>:<span style="color: #4271ae;">send</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #eab700;">CurrentSettings</span>, <span style="color: #eab700;">NewSettings</span>),
+    <span style="color: #4271ae;">send_ack_timeout</span>({<span style="color: #eab700;">Ref</span>,<span style="color: #eab700;">NewSettings</span>}),
+    <span style="color: #eab700;">State</span>#<span style="color: #4271ae;">connection_state</span>{
+      settings_sent=<span style="color: #4271ae;">queue</span>:<span style="color: #4271ae;">in</span>({<span style="color: #eab700;">Ref</span>, <span style="color: #eab700;">NewSettings</span>}, <span style="color: #eab700;">SS</span>)
+     }.
+</pre>
+</div>
+
+<p>
+What we're doing here is saying "get our settings from our
+application, and compare them to what's current (in this case, the
+defaults). Then put those in a queue of settings we've sent to the
+client, but haven't heard back about.
+</p>
+
+<p>
+Fortunately we're not handicapped with what a "reasonable" amount of
+time is. I'm going to choose 5s.
+</p>
+
+<p>
+That's what `send_ack_timeout` is all about.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">send_ack_timeout</span>(<span style="color: #eab700;">SS</span>) -&gt;
+    <span style="color: #eab700;">Self</span> = <span style="color: #8959a8;">self</span>(),
+    <span style="color: #eab700;">SendAck</span> = <span style="color: #718c00;">fun</span>() -&gt;
+        <span style="color: #4271ae;">timer</span>:<span style="color: #4271ae;">sleep</span>(5000),
+        <span style="color: #4271ae;">gen_fsm</span>:<span style="color: #4271ae;">send_all_state_event</span>(<span style="color: #eab700;">Self</span>, {check_settings_ack,<span style="color: #eab700;">SS</span>})
+    <span style="color: #718c00;">end</span>,
+    <span style="color: #8959a8;">spawn_link</span>(<span style="color: #eab700;">SendAck</span>).
+</pre>
+</div>
+
+<p>
+We're creating a higher order function here. or a "lam ba da" as my
+daughter calls them. It's a function that we can pass to another
+function, and the function we're going to pass it to is a doozey!
+spawn_link will spawn a whole new process that's linked to our
+http2_connection. If anything blows up, it will tell us.
+</p>
+
+<p>
+But if we put the call to `self()` inside our lambda, it'll be called
+by the spawned function, and that will report it's own pid, so we'll
+never get our message back.
+</p>
+
+<p>
+All this function is doing is sleeping for 5s and then sending a
+message back to our server about "Hey, have you heard back on this
+yet?"
+</p>
+
+<p>
+How do we know? Well, we know "This" is identified by "Ref", so let's
+see if "Ref" is still first in the queue?
+</p>
+
+<p>
+Also, what's `send_all_state_event`?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handle_event</span>({check_settings_ack, {<span style="color: #eab700;">Ref</span>, <span style="color: #eab700;">NewSettings</span>}},
+             <span style="color: #eab700;">StateName</span>,
+             <span style="color: #eab700;">State</span>=#<span style="color: #4271ae;">connection_state</span>{
+                      settings_sent=<span style="color: #eab700;">SS</span>
+                     }) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #4271ae;">queue</span>:<span style="color: #4271ae;">out</span>(<span style="color: #eab700;">SS</span>) <span style="color: #718c00;">of</span>
+        {{value, {<span style="color: #eab700;">Ref</span>, <span style="color: #eab700;">NewSettings</span>}}, <span style="color: #eab700;">_</span>} -&gt;
+            <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">This is still here!</span>
+            <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">SETTINGS_TIMEOUT</span>, <span style="color: #eab700;">State</span>);
+        <span style="color: #eab700;">_</span> -&gt;
+            <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">YAY!</span>
+            {next_state, <span style="color: #eab700;">StateName</span>, <span style="color: #eab700;">State</span>,0}
+    <span style="color: #718c00;">end</span>;
+</pre>
+</div>
+
+<p>
+We don't care what state we were in. We process this message and then
+go back into it. This means, no matter what, the alarm goes off and we
+check that we got our ack.
+</p>
+
+<p>
+Great! but when are the settings applied?  All we have to do is add an
+ack clause to route_frame, which will get run every time we go through
+the connected callback
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">route_frame</span>({<span style="color: #eab700;">H</span>, <span style="color: #eab700;">_Payload</span>},
+            <span style="color: #eab700;">S</span> = #<span style="color: #4271ae;">connection_state</span>{
+                   settings_sent=<span style="color: #eab700;">SS</span>
+                  })
+    <span style="color: #718c00;">when</span> <span style="color: #eab700;">H</span>#<span style="color: #4271ae;">frame_header</span>.type == ?<span style="color: #4271ae;">SETTINGS</span>,
+         ?<span style="color: #4271ae;">IS_FLAG</span>(<span style="color: #eab700;">H</span>#<span style="color: #4271ae;">frame_header</span>.flags, ?<span style="color: #4271ae;">FLAG_ACK</span>) -&gt;
+    <span style="color: #4271ae;">lager</span>:<span style="color: #4271ae;">debug</span>(<span style="color: #3e999f;">"Received SETTINGS ACK"</span>),
+    <span style="color: #718c00;">case</span> <span style="color: #4271ae;">queue</span>:<span style="color: #4271ae;">out</span>(<span style="color: #eab700;">SS</span>) <span style="color: #718c00;">of</span>
+        {{value, {<span style="color: #eab700;">_Ref</span>, <span style="color: #eab700;">NewSettings</span>}}, <span style="color: #eab700;">NewSS</span>} -&gt;
+            {next_state,
+             connected,
+             <span style="color: #eab700;">S</span>#<span style="color: #4271ae;">connection_state</span>{
+               settings_sent=<span style="color: #eab700;">NewSS</span>,
+               recv_settings=<span style="color: #eab700;">NewSettings</span>
+              }};
+        <span style="color: #eab700;">_</span> -&gt;
+            {next_state, closing, <span style="color: #eab700;">S</span>, 0}
+    <span style="color: #718c00;">end</span>;
+</pre>
+</div>
+
+<p>
+When an ACK comes over the wire, we pop the first settings we have on
+the queue and use them. We apply them to the state and we're good!
+</p>
+
+<p>
+Now, when our `{check_settings_ack&#x2026;` message comes through, our
+settings_sent will either be empty or have something with a different
+ref on the front. Either way, we're set.
+</p>
+
+<p>
+Then we need to use our new function to send our settings back in the
+accept state.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">case</span> <span style="color: #eab700;">Transport</span>:<span style="color: #4271ae;">recv</span>(<span style="color: #eab700;">Socket</span>, <span style="color: #8959a8;">length</span>(?<span style="color: #4271ae;">PREAMBLE</span>), 5000) <span style="color: #718c00;">of</span>
+    {ok, &lt;&lt;?<span style="color: #4271ae;">PREAMBLE</span>&gt;&gt;} -&gt;
+        <span style="color: #eab700;">StateToRouteWith</span> = <span style="color: #4271ae;">send_settings</span>(<span style="color: #eab700;">StateWithSocket</span>),
+
+        <span style="color: #eab700;">Frame</span> = {<span style="color: #eab700;">FH</span>, <span style="color: #eab700;">_FPayload</span>} = <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>({<span style="color: #eab700;">Transport</span>,<span style="color: #eab700;">Socket</span>}, 5000),
+
+        <span style="color: #718c00;">try</span> <span style="color: #eab700;">FH</span>#<span style="color: #4271ae;">frame_header</span>.type <span style="color: #718c00;">of</span>
+            ?<span style="color: #4271ae;">SETTINGS</span> -&gt;
+                <span style="color: #4271ae;">route_frame</span>(<span style="color: #eab700;">Frame</span>, <span style="color: #eab700;">StateToRouteWith</span>);
+            <span style="color: #eab700;">_</span> -&gt;
+                <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateToRouteWith</span>)
+        <span style="color: #718c00;">catch</span>
+            <span style="color: #eab700;">_</span>:<span style="color: #eab700;">_</span> -&gt;
+                <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateToRouteWith</span>)
+        <span style="color: #718c00;">end</span>;
+    <span style="color: #eab700;">BadPreamble</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateWithSocket</span>)
+<span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+Look, we added some new logic to make it a little more robust while
+we're here. Here's a try. It's awesome because it's like a Java
+try/catch and a case statement all at once!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">try</span> <span style="color: #eab700;">FH</span>#<span style="color: #4271ae;">frame_header</span>.type <span style="color: #718c00;">of</span>
+    ?<span style="color: #4271ae;">SETTINGS</span> -&gt;
+        <span style="color: #4271ae;">route_frame</span>(<span style="color: #eab700;">Frame</span>, <span style="color: #eab700;">StateToRouteWith</span>);
+    <span style="color: #eab700;">_</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">StateToRouteWith</span>)
+<span style="color: #718c00;">catch</span>
+    <span style="color: #eab700;">_</span>:<span style="color: #eab700;">_</span> -&gt;
+        <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">SETTINGS_TIMEOUT</span>, <span style="color: #eab700;">StateToRouteWith</span>)
+<span style="color: #718c00;">end</span>;
+</pre>
+</div>
+
+<p>
+If I tried to access FH#frame_header.type and FH was not a frame
+header, what do you think would happen? Did you think "Literally
+explode?" If you did, you'd be wrong. The explosion is figurative :D
+</p>
+
+<p>
+Since sometimes FH can be the atom 'error', this is not uncommon. We
+could check for error, but we can be more concise with the try.
+</p>
+
+<p>
+Everything before the catch works just like a case statement with
+pattern matching. Is FH#frame_header.type == ?SETTINGS? if so, route
+it. Is it some other type of frame? Sorry, first frame has to be
+SETTINGS, so GO_AWAY!
+</p>
+
+<p>
+But if FH isn't a frame header at all, it's because http2:read_frame
+returned `{error, timeout}`. The record access throws an error, and we
+caught it with `_:_`!
+</p>
+
+<p>
+In this case, we've violated the whole "reasonable time thing", so
+we'll send a SETTINGS_TIMEOUT error instead of a PROTOCOL_ERROR,
+although you could argue it is actually a PROTOCOL_ERROR. Any HTTP/2
+heads that want to debate it later? let's do it!
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32">The Connection is open, long live the connection!</h3>
+<div class="outline-text-3" id="text-orgheadline32">
+<p>
+At this point we have an open connection and we're just chillin'
+waiting for frames. More often than not, as a server, the first frame
+we get is going to be on a new stream id, and it's going to be a
+HEADERS frame.
+</p>
+
+<p>
+NOT TO BE CONFUSED WITH A FRAME HEADER. Because boy, it can get
+confusing.
+</p>
+
+<p>
+A new stream id and a HEADERS frame means this is a HTTP request. Yay,
+we're about to serve up some justice! Um&#x2026; I mean content.
+</p>
+
+<p>
+There are a couple of issues we have to handle here. First of all
+there's this idea of CONTINUATION frames. Here's the deal. HPACK is
+encoding the headers it sent to us, so these headers are a binary
+encoded hunk of data. If that binary hunk is bigger than
+MAX_FRAME_SIZE, it needs to come over in multiple frames. Those frames
+are of type "CONTINUATION". No big deal right? This is the race
+condition with HPACK I alluded to before.
+</p>
+
+<p>
+Well, because HPACK is always indexing things for later use and
+streams are multiplexed, it's really important that they're processed
+in order. What that means to us at the implementation level is that
+once we get a HEADERS frame on a stream, the connection is in lockdown
+and can only receive CONTINUATION frames on that stream id until the
+complete set of headers has been sent. This is effectively a mutex to
+solve this.
+</p>
+
+<p>
+How do we know when that's happened? Both HEADERS and CONTINUATION
+frames have an END_HEADERS flag that can be set in the frame header,
+so we look for that.
+</p>
+
+<p>
+Back in our connected state, we're just routing frames, but not
+really paying attention to state. We could have enhanced it to deal
+with the server's state record, and then added some fields to the
+state record to decide if the connection is in HEADER lockdown, but
+there's a better way!
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33">connected state</h3>
+<div class="outline-text-3" id="text-orgheadline33">
+<p>
+The connected state is basically a place where we've got an open
+connection and we're ready to accept frames.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">continuation state</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+<p>
+Ok, so great, we're finally able to compensate for this HPACK mutex
+business. Let me sum up the conditional logic again:
+</p>
+
+<p>
+When a HEADERS frame comes in on stream N, the only frames that can be
+accepted by the server are CONTINUATION frames on stream N until the
+END_HEADERS flag is received.
+</p>
+
+<p>
+Good news is, there's a trivial case: When the HEADERS frame also has
+the END_HEADERS flag! That totally can happen. It all depends on frame
+size limits and number of headers.
+</p>
+
+<p>
+Here's what that route_frame looks like
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">route_frame</span>(<span style="color: #eab700;">F</span>={<span style="color: #eab700;">H</span>=#<span style="color: #4271ae;">frame_header</span>{
+                  type=?<span style="color: #4271ae;">HEADERS</span>,
+                  stream_id=<span style="color: #eab700;">StreamId</span>
+                 }, <span style="color: #eab700;">_Payload</span>} = <span style="color: #eab700;">Frame</span>,
+        <span style="color: #eab700;">S</span> = #<span style="color: #4271ae;">connection_state</span>{
+               decode_context=<span style="color: #eab700;">DecodeContext</span>,
+               recv_settings=#<span style="color: #4271ae;">settings</span>{initial_window_size=<span style="color: #eab700;">RecvWindowSize</span>},
+               send_settings=#<span style="color: #4271ae;">settings</span>{initial_window_size=<span style="color: #eab700;">SendWindowSize</span>},
+               streams=<span style="color: #eab700;">_Streams</span>,
+               content_handler = <span style="color: #eab700;">Handler</span>
+           })
+</pre>
+</div>
+
+<p>
+All we're doing here is figuring out with pattern matching "what bits
+of state we'll need for this frame" and then we have a guard to check
+"Did it have headers? Did it have the flag? Then it wasn't us"
+</p>
+
+<p>
+I'm dropping a bunch more stuff on you here because I won't have time
+to make a deeper dive on streams later. The connection keeps track of
+all the open streams, what their state is, and flow control
+information. Go read the code to learn more. Maybe talk tonight?
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">Stream = <span style="color: #4271ae;">http2_stream</span>:<span style="color: #4271ae;">new</span>(<span style="color: #eab700;">StreamId</span>, {<span style="color: #eab700;">SendWindowSize</span>, <span style="color: #eab700;">RecvWindowSize</span>}),
+{<span style="color: #eab700;">NewStream1</span>, <span style="color: #eab700;">NewConnectionState</span>} = <span style="color: #4271ae;">http2_stream</span>:<span style="color: #4271ae;">recv_frame</span>(<span style="color: #eab700;">Frame</span>, {<span style="color: #eab700;">NewStream</span>, <span style="color: #eab700;">S</span>}),
+</pre>
+</div>
+
+<p>
+Look, http2_stream:recv_frame is like a stream level version of
+route_frame. It helps us manage the state of each stream from this
+diagram.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-plaintext">                         +--------+
+                 send PP |        | recv PP
+                ,--------|  idle  |--------.
+               /         |        |         \
+              v          +--------+          v
+       +----------+          |           +----------+
+       |          |          | send H /  |          |
+,------| reserved |          | recv H    | reserved |------.
+|      | (local)  |          |           | (remote) |      |
+|      +----------+          v           +----------+      |
+|          |             +--------+             |          |
+|          |     recv ES |        | send ES     |          |
+|   send H |     ,-------|  open  |-------.     | recv H   |
+|          |    /        |        |        \    |          |
+|          v   v         +--------+         v   v          |
+|      +----------+          |           +----------+      |
+|      |   half   |          |           |   half   |      |
+|      |  closed  |          | send R /  |  closed  |      |
+|      | (remote) |          | recv R    | (local)  |      |
+|      +----------+          |           +----------+      |
+|           |                |                 |           |
+|           | send ES /      |       recv ES / |           |
+|           | send R /       v        send R / |           |
+|           | recv R     +--------+   recv R   |           |
+| send R /  `-----------&gt;|        |&lt;-----------'  send R / |
+| recv R                 | closed |               recv R   |
+`-----------------------&gt;|        |&lt;----------------------'
+                         +--------+
+</pre>
+</div>
+
+<p>
+Let's dive in there for a minute, because otherwise we'd just have to
+talk about error_handling
+</p>
+
+<p>
+For the trivial case where a single headers frame comes in and it's
+both the END of the header block AND the request, it looks pretty simple:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">recv_frame</span>(<span style="color: #eab700;">F</span>={#<span style="color: #4271ae;">frame_header</span>{
+                   flags=<span style="color: #eab700;">Flags</span>,
+                   type=?<span style="color: #4271ae;">HEADERS</span>
+                  }, <span style="color: #eab700;">_Payload</span>},
+           {<span style="color: #eab700;">Stream</span>=#<span style="color: #4271ae;">stream_state</span>{
+                      state=idle
+                     },
+            <span style="color: #eab700;">Connection</span>=#<span style="color: #4271ae;">connection_state</span>{
+              decode_context=<span style="color: #eab700;">DecodeContext</span>,
+              content_handler=<span style="color: #eab700;">Handler</span>
+             }})
+  <span style="color: #718c00;">when</span> ?<span style="color: #4271ae;">IS_FLAG</span>(<span style="color: #eab700;">Flags</span>, ?<span style="color: #4271ae;">FLAG_END_STREAM</span>),
+       ?<span style="color: #4271ae;">IS_FLAG</span>(<span style="color: #eab700;">Flags</span>, ?<span style="color: #4271ae;">FLAG_END_HEADERS</span>) -&gt;
+    <span style="color: #eab700;">HeadersBin</span> = <span style="color: #4271ae;">http2_frame_headers</span>:<span style="color: #4271ae;">from_frames</span>([<span style="color: #eab700;">F</span>]),
+    {<span style="color: #eab700;">Headers</span>, <span style="color: #eab700;">NewDecodeContext</span>} = <span style="color: #4271ae;">hpack</span>:<span style="color: #4271ae;">decode</span>(<span style="color: #eab700;">HeadersBin</span>, <span style="color: #eab700;">DecodeContext</span>),
+    <span style="color: #eab700;">Handler</span>:<span style="color: #4271ae;">spawn_handle</span>(<span style="color: #8959a8;">self</span>(), <span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">Headers</span>, &lt;&lt;&gt;&gt;),
+    {<span style="color: #eab700;">Stream</span>#<span style="color: #4271ae;">stream_state</span>{request_headers=<span style="color: #eab700;">Headers</span>},
+     <span style="color: #eab700;">Connection</span>#<span style="color: #4271ae;">connection_state</span>{
+       decode_context=<span style="color: #eab700;">NewDecodeContext</span>
+      }
+     };
+</pre>
+</div>
+
+<p>
+There are a lot more clauses, but we won't have time to talk about
+them right now. Don't be sad, I'm here all week!
+</p>
+
+<p>
+We're doing two things in here, and really, those things just get
+split up into different squares on that diagram.
+</p>
+
+<p>
+First is decoding the headers.
+</p>
+
+<p>
+Headers can be a list of frames, but in this case it's only one. It's
+easier for us if it's a list of one, so we wrapped the frame in a
+`[]`. Then we want to decode the binary. See how it takes in a Context
+and returns a new one? That is the index that changes.
+</p>
+
+<p>
+Second is handling the request.
+</p>
+
+<p>
+This is just the content handler. In our case we're serving up files
+as DATA frames, but we could and probably will write a webmachine
+handler that could be used here as well.
+</p>
+
+<p>
+Since we know this is an END_HEADERS, we don't even need to transition
+into the continuation state. We don't need the mutex since we've
+already met the target condition! We'll go set the NextState value
+back at the connection level
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">NextState = <span style="color: #718c00;">case</span> ?<span style="color: #4271ae;">IS_FLAG</span>(<span style="color: #eab700;">H</span>#<span style="color: #4271ae;">frame_header</span>.flags, ?<span style="color: #4271ae;">FLAG_END_HEADERS</span>) <span style="color: #718c00;">of</span>
+                true -&gt;
+                    connected;
+                false -&gt;
+                    continuation
+            <span style="color: #718c00;">end</span>,
+{next_state, <span style="color: #eab700;">NextState</span>, <span style="color: #eab700;">NewConnectionState</span>#<span style="color: #4271ae;">connection_state</span>{
+                             streams = [{<span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">NewStream1</span>}|<span style="color: #eab700;">Streams</span>],
+                             continuation_stream_id = <span style="color: #eab700;">StreamId</span>
+                            }, 0}
+</pre>
+</div>
+
+<p>
+Since this was a new stream, we can just add it to the list. If it
+weren't we'd have to remove the old one first so there could be only
+one. Then we transition straight back to connected.
+</p>
+
+<p>
+So, we make a new stream and throw it in the state. In the case where
+we don't have an END HEADERS flag in our frame header (not a header
+frame&#x2026; uggggg), then we transition to the continuation state. That's
+it. It's off to Mutexburg, population: you!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">continuation</span>(next,
+             <span style="color: #eab700;">S</span> = #<span style="color: #4271ae;">connection_state</span>{
+                    socket=<span style="color: #eab700;">Socket</span>,
+                    continuation_stream_id = <span style="color: #eab700;">StreamId</span>
+                   }) -&gt;
+    <span style="color: #eab700;">Response</span> =
+        <span style="color: #718c00;">case</span> <span style="color: #4271ae;">http2_frame</span>:<span style="color: #4271ae;">read</span>(<span style="color: #eab700;">Socket</span>, 10) <span style="color: #718c00;">of</span>
+            {error, <span style="color: #eab700;">_</span>} -&gt;
+                {next_state, continuation, <span style="color: #eab700;">S</span>, 0};
+            <span style="color: #eab700;">Frame</span> = {#<span style="color: #4271ae;">frame_header</span>{
+                     stream_id=<span style="color: #eab700;">StreamId</span>,
+                     type=?<span style="color: #4271ae;">CONTINUATION</span>
+                    }, <span style="color: #eab700;">_</span>} -&gt;
+                <span style="color: #4271ae;">route_frame</span>(<span style="color: #eab700;">Frame</span>, <span style="color: #eab700;">S</span>);
+            <span style="color: #eab700;">Frame</span> -&gt;
+                <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">S</span>)
+        <span style="color: #718c00;">end</span>,
+    <span style="color: #eab700;">Response</span>;
+<span style="color: #f5871f;">continuation</span>(<span style="color: #eab700;">_</span>, <span style="color: #eab700;">State</span>) -&gt;
+    <span style="color: #4271ae;">go_away</span>(?<span style="color: #4271ae;">PROTOCOL_ERROR</span>, <span style="color: #eab700;">State</span>).
+</pre>
+</div>
+
+<p>
+So we're just checking here. If the socket times out after 10ms, come
+back into this state again. If the frame read off the socket pattern
+matches to the stream we're locked on, and it's a CONTINUATION frame,
+route the frame, otherwise it's a protocol error.
+</p>
+
+<p>
+So now,we have to route the continuation frame, but it's a stream
+operation, so let's delegate it out to http2_stream:recv_frame
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">route_frame</span>(<span style="color: #eab700;">F</span>={<span style="color: #eab700;">H</span>=#<span style="color: #4271ae;">frame_header</span>{
+                    stream_id=<span style="color: #eab700;">StreamId</span>,
+                    type=?<span style="color: #4271ae;">CONTINUATION</span>
+                   }, <span style="color: #eab700;">_Payload</span>},
+            <span style="color: #eab700;">S</span> = #<span style="color: #4271ae;">connection_state</span>{
+                   streams = <span style="color: #eab700;">Streams</span>
+                  }) -&gt;
+    <span style="color: #4271ae;">lager</span>:<span style="color: #4271ae;">debug</span>(<span style="color: #3e999f;">"Received CONTINUATION Frame for Stream ~p"</span>, [<span style="color: #eab700;">StreamId</span>]),
+    {<span style="color: #eab700;">Stream</span>, <span style="color: #eab700;">NewStreamsTail</span>} = <span style="color: #4271ae;">get_stream</span>(<span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">Streams</span>),
+    {<span style="color: #eab700;">NewStream</span>, <span style="color: #eab700;">NewConnectionState</span>} = <span style="color: #4271ae;">http2_stream</span>:<span style="color: #4271ae;">recv_frame</span>(<span style="color: #eab700;">F</span>, {<span style="color: #eab700;">Stream</span>, <span style="color: #eab700;">S</span>}),
+    <span style="color: #eab700;">NewStreams</span> = [{<span style="color: #eab700;">StreamId</span>,<span style="color: #eab700;">NewStream</span>}|<span style="color: #eab700;">NewStreamsTail</span>],
+
+    <span style="color: #eab700;">NextState</span> = <span style="color: #718c00;">case</span> ?<span style="color: #4271ae;">IS_FLAG</span>(<span style="color: #eab700;">H</span>#<span style="color: #4271ae;">frame_header</span>.flags, ?<span style="color: #4271ae;">FLAG_END_HEADERS</span>) <span style="color: #718c00;">of</span>
+                    true -&gt;
+                        connected;
+                    false -&gt;
+                        continuation
+                <span style="color: #718c00;">end</span>,
+
+    {next_state, <span style="color: #eab700;">NextState</span>, <span style="color: #eab700;">NewConnectionState</span>#<span style="color: #4271ae;">connection_state</span>{
+                              streams = <span style="color: #eab700;">NewStreams</span>
+                             },0};
+</pre>
+</div>
+
+<p>
+We'll just keep looping through here until we get that END_HEADERS
+flag and find ourselves back in the continuation state. But if it has
+the flag set, it's handled in the http2_stream and we just transition
+back into the right state.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">spawn_handle</span>(
+        <span style="color: #8959a8;">pid</span>(),
+        <span style="color: #4271ae;">stream_id</span>(),     <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Stream Id</span>
+        <span style="color: #4271ae;">hpack</span>:<span style="color: #4271ae;">headers</span>(), <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Decoded Request Headers</span>
+        <span style="color: #8959a8;">binary</span>()         <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Request Body</span>
+       ) -&gt;<span style="color: #f5871f;"> </span><span style="color: #8959a8;">pid</span>().
+<span style="color: #f5871f;">spawn_handle</span>(<span style="color: #eab700;">Pid</span>, <span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">Headers</span>, <span style="color: #eab700;">ReqBody</span>) -&gt;
+    <span style="color: #eab700;">Handler</span> = <span style="color: #718c00;">fun</span>() -&gt;
+        <span style="color: #4271ae;">handle</span>(<span style="color: #eab700;">Pid</span>, <span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">Headers</span>, <span style="color: #eab700;">ReqBody</span>)
+    <span style="color: #718c00;">end</span>,
+    <span style="color: #8959a8;">spawn_link</span>(<span style="color: #eab700;">Handler</span>).
+
+<span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">handle</span>(
+        <span style="color: #8959a8;">pid</span>(),
+        <span style="color: #4271ae;">stream_id</span>(),
+        <span style="color: #4271ae;">hpack</span>:<span style="color: #4271ae;">headers</span>(),
+        <span style="color: #8959a8;">binary</span>()
+       ) -&gt;<span style="color: #f5871f;"> </span>ok.
+</pre>
+</div>
+
+<p>
+Let's walk through that state diagram!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-plaintext">                         +--------+
+                 send PP |        | recv PP
+                ,--------|  idle  |--------.
+               /         |        |         \
+              v          +--------+          v
+       +----------+          |           +----------+
+       |          |          | send H /  |          |
+,------| reserved |          | recv H    | reserved |------.
+|      | (local)  |          |           | (remote) |      |
+|      +----------+          v           +----------+      |
+|          |             +--------+             |          |
+|          |     recv ES |        | send ES     |          |
+|   send H |     ,-------|  open  |-------.     | recv H   |
+|          |    /        |        |        \    |          |
+|          v   v         +--------+         v   v          |
+|      +----------+          |           +----------+      |
+|      |   half   |          |           |   half   |      |
+|      |  closed  |          | send R /  |  closed  |      |
+|      | (remote) |          | recv R    | (local)  |      |
+|      +----------+          |           +----------+      |
+|           |                |                 |           |
+|           | send ES /      |       recv ES / |           |
+|           | send R /       v        send R / |           |
+|           | recv R     +--------+   recv R   |           |
+| send R /  `-----------&gt;|        |&lt;-----------'  send R / |
+| recv R                 | closed |               recv R   |
+`-----------------------&gt;|        |&lt;----------------------'
+                         +--------+
+</pre>
+</div>
+
+<p>
+Path 1: easiest idle receives HEADERS with END_HEADERS AND END_STREAM!
+decode headers, handle content, transition to closed
+</p>
+
+<p>
+Path 2: idle receives HEADERS with END_STREAM, no END_HEADERS,
+transition to half_closed_remote, wait for continuations until END
+HEADERS, then decode headers, handle content, transition to closed.
+</p>
+
+<p>
+Path 3: idle receives HEADERS with END_HEADERS, no
+END_STREAM. transition to open and wait for DATA frames until one
+comes with END_STREAM, then decode headers, handle content and
+transition to closed.
+</p>
+
+<p>
+Path 4: idle receives HEADERS, no END_STREAM or END_HEADERS transition
+into open, expect continuations until one shows up with an
+END_HEADERS, then expect DATA frames until one shows up with an
+END_STREAM
+</p>
+
+<p>
+%%Solid conclusion? Do I even need one?
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #4271ae;">http2_connection</span>:<span style="color: #4271ae;">send_headers</span>(<span style="color: #eab700;">ConnPid</span>, <span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">ResponseHeaders</span>),
+<span style="color: #4271ae;">http2_connection</span>:<span style="color: #4271ae;">send_body</span>(<span style="color: #eab700;">ConnPid</span>, <span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">Data</span>),
+<span style="color: #eab700;">NewStreamId</span> = <span style="color: #4271ae;">http2_connection</span>:<span style="color: #4271ae;">new_stream</span>(<span style="color: #eab700;">ConnPid</span>),
+<span style="color: #4271ae;">http2_connection</span>:<span style="color: #4271ae;">send_promise</span>(<span style="color: #eab700;">ConnPid</span>, <span style="color: #eab700;">StreamId</span>, <span style="color: #eab700;">NewStreamId</span>, <span style="color: #eab700;">PHeaders</span>),
+<span style="color: #f5871f;">spawn_handle</span>(<span style="color: #eab700;">ConnPid</span>, <span style="color: #eab700;">NewStreamId</span>, <span style="color: #eab700;">PHeaders</span>, &lt;&lt;&gt;&gt;),
+
+{ok, <span style="color: #eab700;">Ref</span>} = <span style="color: #4271ae;">prim_inet</span>:<span style="color: #4271ae;">async_accept</span>(<span style="color: #eab700;">ListenSocket</span>, -1),
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Joe DeVivo</p>
+<p class="date">Created: 2015-09-24 Thu 07:36</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
